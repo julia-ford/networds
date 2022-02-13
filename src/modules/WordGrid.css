@@ -1,0 +1,23 @@
+.WordGrid {
+  position: relative;
+  width: calc(
+    (var(--word-grid-width) + 0.5) * var(--tile-diam) +
+      (var(--word-grid-width) - 0.5) * var(--tile-margin)
+  );
+  height: calc(
+    var(--word-grid-height) * var(--tile-diam) + (var(--word-grid-height) - 1) *
+      var(--tile-margin)
+  );
+  border-radius: calc(var(--tile-diam) / 2);
+  margin-top: calc(var(--tile-diam) - var(--tile-margin));
+  margin-bottom: var(--tile-margin);
+  transition: box-shadow 0.5s, width 0.5s;
+}
+
+.WordGrid.ChoosingBoardSpace {
+  box-shadow: var(--suggestion-shadow);
+}
+
+.WGTile {
+  background-color: var(--color-gray-main);
+}

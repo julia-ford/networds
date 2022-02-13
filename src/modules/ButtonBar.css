@@ -1,0 +1,17 @@
+.ButtonBar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.ButtonBarSubmit,
+.ButtonBarClear,
+.ButtonBarConfirm {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--tile-diam);
+  font-size: var(--tile-font-size);
+  font-family: 'Roboto', Arial, Helvetica, sans-serif;
+}

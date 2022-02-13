@@ -1,0 +1,26 @@
+.LetterCloud {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: calc(var(--tile-diam) * 5 + var(--tile-margin) * 6);
+  height: calc(var(--tile-diam) * 5 + var(--tile-margin) * 6);
+  border-radius: calc((var(--tile-diam) * 5 + var(--tile-margin) * 6) / 2);
+  margin-top: var(--tile-margin);
+}
+
+.LCTile {
+  background-color: var(--color-gray-main);
+  color: var(--color-blue-main);
+}
+.LCTile.Clickable:hover {
+  background-color: var(--color-gray-focus);
+  color: var(--color-blue-focus);
+}
+.LCTile.Chosen {
+  background-color: var(--color-blue-main);
+  color: white;
+}
+.LCTile.Chosen.Clickable:hover {
+  background-color: var(--color-blue-focus);
+  color: white;
+}

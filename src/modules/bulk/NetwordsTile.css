@@ -1,0 +1,22 @@
+.NetwordsTile {
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+/Edge */
+  user-select: none; /* Standard */
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-family: 'Roboto', Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  font-size: var(--tile-font-size);
+
+  height: var(--tile-diam);
+  width: var(--tile-diam);
+  border-radius: calc(var(--tile-diam));
+
+  transition: color 0.5s, background-color 0.5s, box-shadow 0.5s;
+
+  position: absolute;
+}

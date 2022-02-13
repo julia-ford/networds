@@ -1,0 +1,8 @@
+.DirectionPicker {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--tile-diam);
+  height: var(--tile-diam);
+}

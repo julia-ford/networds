@@ -73,7 +73,6 @@ interface WGTileProps {
   candy?: Candy;
   isJunction: boolean;
   isChosen: boolean;
-  isCongested: boolean;
   isValidChoice: boolean;
 
   isInPreview: boolean;
@@ -176,7 +175,6 @@ export const selectWordGridTilesState = createSelector(
         rowArray.push({
           isJunction: false,
           isChosen: !!chosenSpace && AreTilesSame({ row, col }, chosenSpace),
-          isCongested: false,
           isValidChoice: false,
           isInPreview: false,
           hasPreviewError: false
@@ -201,19 +199,15 @@ export const selectWordGridTilesState = createSelector(
       word.forEach((tileData) => {
         const wgTile = wordGrid[tileData.row][tileData.col];
 
-        if (wgTile.letter) {
-          wgTile.isJunction = true;
-          wgTile.isCongested = true;
+        wgTile.letter = tileData.letter;
+        if (
+          wipChosenIndex !== undefined &&
+          wipTiles[wipChosenIndex].letter &&
+          wgTile.letter === wipTiles[wipChosenIndex].letter
+        ) {
+          wgTile.isValidChoice = true;
+        } else if (wipChosenIndex) {
           wgTile.isValidChoice = false;
-          invalidateAdjacentTiles(wordGrid, tileData);
-        } else {
-          wgTile.letter = tileData.letter;
-          if (wipChosenIndex && !wgTile.isCongested) {
-            const wipChosenLetter = wipTiles[wipChosenIndex].letter;
-            if (wipChosenLetter && wgTile.letter === wipChosenLetter) {
-              wgTile.isValidChoice = true;
-            }
-          }
         }
       });
     });
@@ -283,56 +277,6 @@ export const selectWordGridTilesState = createSelector(
     return wordGrid;
   }
 );
-
-const invalidateAdjacentTiles = (
-  wordGrid: WGTileProps[][],
-  tileData: NWTData
-) => {
-  if (wordGrid[tileData.row - 1]) {
-    wordGrid[tileData.row - 1][tileData.col].isCongested = true;
-    wordGrid[tileData.row - 1][tileData.col].isValidChoice = false;
-  }
-  if (wordGrid[tileData.row + 1]) {
-    wordGrid[tileData.row + 1][tileData.col].isCongested = true;
-    wordGrid[tileData.row + 1][tileData.col].isValidChoice = false;
-  }
-  if (wordGrid[tileData.row][tileData.col - 1]) {
-    wordGrid[tileData.row][tileData.col - 1].isCongested = true;
-    wordGrid[tileData.row][tileData.col - 1].isValidChoice = false;
-  }
-  if (wordGrid[tileData.row][tileData.col + 1]) {
-    wordGrid[tileData.row][tileData.col + 1].isCongested = true;
-    wordGrid[tileData.row][tileData.col + 1].isValidChoice = false;
-  }
-
-  if (tileData.row % 2 === 1) {
-    if (wordGrid[tileData.row - 1]) {
-      if (wordGrid[tileData.row - 1][tileData.col + 1]) {
-        wordGrid[tileData.row - 1][tileData.col + 1].isCongested = true;
-        wordGrid[tileData.row - 1][tileData.col + 1].isValidChoice = true;
-      }
-    }
-    if (wordGrid[tileData.row + 1]) {
-      if (wordGrid[tileData.row + 1][tileData.col + 1]) {
-        wordGrid[tileData.row + 1][tileData.col + 1].isCongested = true;
-        wordGrid[tileData.row + 1][tileData.col + 1].isValidChoice = true;
-      }
-    }
-  } else {
-    if (wordGrid[tileData.row - 1]) {
-      if (wordGrid[tileData.row - 1][tileData.col - 1]) {
-        wordGrid[tileData.row - 1][tileData.col - 1].isCongested = true;
-        wordGrid[tileData.row - 1][tileData.col - 1].isValidChoice = true;
-      }
-    }
-    if (wordGrid[tileData.row + 1]) {
-      if (wordGrid[tileData.row + 1][tileData.col - 1]) {
-        wordGrid[tileData.row + 1][tileData.col - 1].isCongested = true;
-        wordGrid[tileData.row + 1][tileData.col - 1].isValidChoice = true;
-      }
-    }
-  }
-};
 
 const getNextCoords = (tileData: NWTData, direction: Directions) => {
   const coords: NWTData = {

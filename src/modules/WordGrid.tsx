@@ -8,7 +8,6 @@ import {
 } from '../stuff/slices/WordGridSlice';
 import { DirectionPicker } from './bulk/DirectionPicker';
 import {
-  COLOR_BLUE_MAIN,
   COLOR_BLUE_TRANS,
   GetLeftOffset,
   GetTopOffset,
@@ -22,8 +21,7 @@ import './WordGrid.css';
 export const WG_WIDTH = 19;
 export const WG_HEIGHT = 9;
 
-interface WGProps {}
-export const WordGrid = ({}: WGProps) => {
+export const WordGrid = () => {
   const dispatch = useAppDispatch();
 
   const gameMode = useAppSelector((state) => state.game.gameMode);

@@ -21,3 +21,14 @@
 .WGTile {
   background-color: var(--color-gray-main);
 }
+
+.WGTile.WithLetter {
+  background-color: var(--color-blue-main);
+  color: white;
+}
+
+.WGTile.Junction {
+  border-width: var(--tile-shadow-width);
+  border-style: solid;
+  border-color: #00000050;
+}

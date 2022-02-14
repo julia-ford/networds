@@ -4,11 +4,15 @@ import { Directions, GameModes } from '../stuff/Shared';
 import { setGameMode } from '../stuff/slices/GameSlice';
 import {
   chooseWordGridSpace,
-  selectWordGridTilesState
+  selectWordGridTilesState,
+  WGTileData
 } from '../stuff/slices/WordGridSlice';
 import { DirectionPicker } from './bulk/DirectionPicker';
 import {
+  Candy,
   COLOR_BLUE_TRANS,
+  COLOR_ERROR,
+  COLOR_PREVIEW,
   GetLeftOffset,
   GetTopOffset,
   NetwordsTile,
@@ -34,24 +38,6 @@ export const WordGrid = () => {
       const leftOffset = GetLeftOffset(tileData);
       const topOffset = GetTopOffset(tileData);
 
-      let style: CSSProperties = {
-        left: `${leftOffset}${TILE_UNITS}`,
-        top: `${topOffset}${TILE_UNITS}`
-      };
-      if (tile?.isChosen) {
-        if (tile.candy) {
-          style.boxShadow = `0 0 0 ${TILE_SHADOW_WIDTH}${TILE_UNITS} ${tile.candy.color}`;
-        } else {
-          style.border = `0 0 0 ${TILE_SHADOW_WIDTH}${TILE_UNITS} ${COLOR_BLUE_TRANS}`;
-        }
-      }
-      if (gameMode === GameModes.ConfirmingChoices) {
-        if (wordGrid.hasErrors && tile.isInPreview) {
-          style.backgroundColor = '#ff0000';
-        } else if (tile.isInPreview) {
-          style.backgroundColor = '#ffff00';
-        }
-      }
       let onClick: undefined | (() => void);
       if (gameMode === GameModes.ChoosingBoardSpace && tile.isValidChoice) {
         onClick = () => {
@@ -61,14 +47,17 @@ export const WordGrid = () => {
       }
 
       return (
-        <NetwordsTile
+        <WGTile
           key={`WG Tile at (${rowIndex}, ${colIndex})`}
-          className='WGTile'
-          letter={tile.previewLetter ?? tile.letter}
-          candy={tile.candy}
-          style={style}
+          wgHasErrors={!!wordGrid.hasErrors}
+          wgTileData={tile}
+          className={`WGTile ${tile.letter ? 'WithLetter' : ''} ${
+            tile.isJunction ? 'Junction' : ''
+          }`}
+          leftOffset={leftOffset}
+          topOffset={topOffset}
           onClick={onClick}
-        ></NetwordsTile>
+        ></WGTile>
       );
     });
   });
@@ -90,5 +79,61 @@ export const WordGrid = () => {
       {tiles}
       {directionPickers}
     </div>
+  );
+};
+
+interface WGTProps {
+  wgHasErrors: boolean;
+  wgTileData: WGTileData;
+  className: string;
+  leftOffset: number;
+  topOffset: number;
+  onClick?: () => void;
+}
+const WGTile = ({
+  wgHasErrors,
+  wgTileData,
+  className,
+  leftOffset,
+  topOffset,
+  onClick
+}: WGTProps) => {
+  // Left and top offsets.
+  let style: CSSProperties = {
+    left: `${leftOffset}${TILE_UNITS}`,
+    top: `${topOffset}${TILE_UNITS}`
+  };
+
+  // Chosen tile box-shadow indicator.
+  if (wgTileData?.isChosen) {
+    if (wgTileData.candy) {
+      style.boxShadow = `0 0 0 ${TILE_SHADOW_WIDTH}${TILE_UNITS} ${wgTileData.candy.colorMain}80`;
+    } else {
+      style.border = `0 0 0 ${TILE_SHADOW_WIDTH}${TILE_UNITS} ${COLOR_BLUE_TRANS}`;
+    }
+  }
+
+  // Error, preview, and candy background colors.
+  if (wgHasErrors && wgTileData.isInPreview) {
+    style.backgroundColor = COLOR_ERROR;
+    style.color = 'white';
+    style.boxShadow = `0 0 0 ${TILE_SHADOW_WIDTH}${TILE_UNITS} ${COLOR_ERROR}80`;
+  } else if (wgTileData.isInPreview) {
+    style.backgroundColor = COLOR_PREVIEW;
+    style.color = 'black';
+    style.boxShadow = `0 0 0 ${TILE_SHADOW_WIDTH}${TILE_UNITS} ${COLOR_PREVIEW}80`;
+  } else if (wgTileData.candy && wgTileData.letter) {
+    style.backgroundColor = wgTileData.candy.colorMain;
+    style.color = wgTileData.candy.colorText;
+  }
+
+  return (
+    <NetwordsTile
+      candy={wgTileData.candy}
+      letter={wgTileData.previewLetter ?? wgTileData.letter}
+      className={className}
+      onClick={onClick}
+      style={style}
+    ></NetwordsTile>
   );
 };

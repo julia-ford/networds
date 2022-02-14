@@ -1,6 +1,6 @@
+import { CSSProperties, ReactNode } from 'react';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { ReactNode } from 'react';
 import { NWTData } from '../../stuff/Shared';
 import './NetwordsTile.css';
 
@@ -11,10 +11,13 @@ export const ODD_ROW_OFFSET = TILE_DIAMETER / 2 + TILE_MARGIN / 2;
 export const TILE_UNITS = 'vh';
 export const COLOR_BLUE_MAIN = '#007bff';
 export const COLOR_BLUE_TRANS = COLOR_BLUE_MAIN + '80';
+export const COLOR_ERROR = '#dc3545';
+export const COLOR_PREVIEW = '#ffc107';
 
 export interface Candy {
   icon: IconProp;
-  color: string;
+  colorMain: string;
+  colorText: string;
   isValidStart: boolean;
 }
 
@@ -23,17 +26,13 @@ interface NTProps {
   candy?: Candy;
   className: string;
   onClick?: () => void;
-  onMouseEnter?: () => void;
-  onMouseOut?: () => void;
-  style?: React.CSSProperties;
+  style?: CSSProperties;
 }
 export const NetwordsTile = ({
   letter,
   candy,
   className,
   onClick,
-  onMouseEnter,
-  onMouseOut,
   style = {}
 }: NTProps) => {
   let content: ReactNode = null;
@@ -41,18 +40,16 @@ export const NetwordsTile = ({
     content = letter;
   } else if (candy) {
     content = (
-      <FontAwesomeIcon icon={candy.icon} color={candy.color}></FontAwesomeIcon>
+      <FontAwesomeIcon
+        icon={candy.icon}
+        color={candy.colorMain}
+      ></FontAwesomeIcon>
     );
-  }
-  if (letter && candy) {
-    style.backgroundColor = candy.color;
   }
   return (
     <div
       className={`NetwordsTile ${className} ${onClick ? 'Clickable' : ''}`}
       onClick={onClick}
-      onMouseEnter={onMouseEnter}
-      onMouseOut={onMouseOut}
       style={style}
     >
       {content}

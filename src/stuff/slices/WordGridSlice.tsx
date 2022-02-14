@@ -40,7 +40,8 @@ const wordGridSlice = createSlice<
         col: 9,
         candy: {
           icon: faStar,
-          color: '#ec407a',
+          colorMain: '#ec407a',
+          colorText: 'white',
           isValidStart: true
         }
       }
@@ -128,7 +129,7 @@ export const selectPreviewWord = createSelector(
   }
 );
 
-interface WGTileProps {
+export interface WGTileData {
   letter?: string;
   candy?: Candy;
 
@@ -151,9 +152,9 @@ export const selectWordGridTilesState = createSelector(
   ],
   (chosenSpace, candies, words, wipChosenLetter, previewWord) => {
     // Make blank grid of correct dimensions.
-    const wordGrid: WGTileProps[][] & { hasErrors?: boolean } = [];
+    const wordGrid: WGTileData[][] & { hasErrors?: boolean } = [];
     for (let row = 0; row < WG_HEIGHT; row++) {
-      const rowArray: WGTileProps[] = [];
+      const rowArray: WGTileData[] = [];
       for (let col = 0; col < WG_WIDTH; col++) {
         rowArray.push({
           isJunction: false,
@@ -181,7 +182,9 @@ export const selectWordGridTilesState = createSelector(
     words.forEach((word) => {
       word.forEach((tileData) => {
         const wgTile = wordGrid[tileData.row][tileData.col];
-
+        if (wgTile.letter) {
+          wgTile.isJunction = true;
+        }
         wgTile.letter = tileData.letter;
         if (wipChosenLetter && wgTile.letter === wipChosenLetter) {
           wgTile.isValidChoice = true;
@@ -206,7 +209,7 @@ export const selectWordGridTilesState = createSelector(
       });
 
       wordGrid.hasErrors = legalPreviewTiles.length !== previewWord.length;
-      previewWord?.forEach((previewTile) => {
+      legalPreviewTiles.forEach((previewTile) => {
         const oldeTile = wordGrid[previewTile.row][previewTile.col];
         oldeTile.isInPreview = true;
         oldeTile.previewLetter = previewTile.letter;

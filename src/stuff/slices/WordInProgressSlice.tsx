@@ -2,7 +2,8 @@ import React from 'react';
 import {
   createSlice,
   SliceCaseReducers,
-  PayloadAction
+  PayloadAction,
+  createSelector
 } from '@reduxjs/toolkit';
 
 import { AreTilesSame, NWTData } from '../Shared';
@@ -51,7 +52,7 @@ export const wipContains = (state: RootState, tileData: NWTData) => {
   });
 };
 
-export const selectIsLastTileInWIP = (state: RootState, tileData: NWTData) => {
+export const selectIsLastTileInWip = (state: RootState, tileData: NWTData) => {
   return (
     state.wordInProgress.tilesFromLetterCloud.length &&
     state.wordInProgress.tilesFromLetterCloud.findIndex((possibleMatch) => {
@@ -72,13 +73,15 @@ export const selectWordInProgressAsString = (state: RootState) => {
     .toLowerCase();
 };
 
-export const selectChosenLetter = (state: RootState) => {
-  return state.wordInProgress.chosenIndex
-    ? state.wordInProgress.tilesFromLetterCloud[
-        state.wordInProgress.chosenIndex
-      ].letter
-    : undefined;
-};
+export const selectWipChosenLetter = createSelector(
+  [selectWipTiles, selectWipChosen],
+  (wipTiles, wipChosen) => {
+    if (wipChosen === undefined) {
+      return undefined;
+    }
+    return wipTiles[wipChosen].letter;
+  }
+);
 
 export const {
   addTileToWordInProgress,

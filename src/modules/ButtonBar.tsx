@@ -6,7 +6,7 @@ import {
   addWord,
   clearChosenSpace,
   selectPlacedWordsAsStrings,
-  selectPreviewWordTiles
+  selectPreviewWord
 } from '../stuff/slices/WordGridSlice';
 import {
   clearWordInProgress,
@@ -20,7 +20,7 @@ export const ButtonBar = () => {
   const gameMode = useAppSelector((state) => state.game.gameMode);
   const wordInProgressLength = useAppSelector(selectWordInProgressLength);
   const wordInProgressAsString = useAppSelector(selectWordInProgressAsString);
-  const previewTiles = useAppSelector(selectPreviewWordTiles);
+  const previewTiles = useAppSelector(selectPreviewWord);
   const placedWords = useAppSelector(selectPlacedWordsAsStrings);
 
   const dispatch = useAppDispatch();

@@ -41,6 +41,23 @@ export enum Directions {
   Northwest = 'NW'
 }
 
+export const GetOppositeDirection = (dir: Directions) => {
+  switch (dir) {
+    case Directions.Northeast:
+      return Directions.Southwest;
+    case Directions.East:
+      return Directions.West;
+    case Directions.Southeast:
+      return Directions.Northwest;
+    case Directions.Southwest:
+      return Directions.Northeast;
+    case Directions.West:
+      return Directions.East;
+    case Directions.Northwest:
+      return Directions.Southeast;
+  }
+};
+
 export interface NWTData {
   row: number;
   col: number;

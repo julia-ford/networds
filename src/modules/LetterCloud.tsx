@@ -17,7 +17,7 @@ import {
 } from '../stuff/slices/LetterCloudSlice';
 import {
   addTileToWordInProgress,
-  selectIsLastTileInWIP,
+  selectIsLastTileInWip,
   removeLastTile,
   wipContains
 } from '../stuff/slices/WordInProgressSlice';
@@ -132,7 +132,7 @@ const LCTile = ({ tileData }: LCTProps) => {
   const gameMode = useAppSelector((state) => state.game.gameMode);
   const isChosen = useAppSelector((state) => wipContains(state, tileData));
   const isLastTile = useAppSelector((state) =>
-    selectIsLastTileInWIP(state, tileData)
+    selectIsLastTileInWip(state, tileData)
   );
   const wordInProgress = useAppSelector(
     (state) => state.wordInProgress.tilesFromLetterCloud

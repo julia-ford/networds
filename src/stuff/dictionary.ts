@@ -1,4 +1,4 @@
-import * as dictData from './dict_culled_with_q.json';
+import dictData from './dict_culled_with_q.json';
 
 const { dictionary } = dictData;
 

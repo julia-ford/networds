@@ -6,14 +6,20 @@ import {
 } from '@reduxjs/toolkit';
 
 import { RootState } from '../store';
+import { getRandomLetters } from '../dictionary';
 
-const tempLetters = [
+const date = new Date();
+const tempLetters = getRandomLetters(
+  `${date.getUTCFullYear()}${date.getUTCMonth()}${date.getUTCDate()}`
+);
+
+/*[
   [, 'C', 'A', 'T'],
   ['B', 'R', 'O', 'K'],
   ['E', 'P', 'I', 'O', 'U'],
   ['S', 'E', 'N', 'G'],
   [, 'A', 'G', 'E']
-];
+];*/
 
 interface LetterCloudState {
   letters: (string | undefined)[][];

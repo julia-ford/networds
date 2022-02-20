@@ -69,7 +69,7 @@ export const selectWordInProgressLength = (state: RootState) => {
 export const selectWordInProgressAsString = (state: RootState) => {
   return state.wordInProgress.tilesFromLetterCloud
     .map((tileData) => tileData.letter!)
-    .join()
+    .join('')
     .toLowerCase();
 };
 

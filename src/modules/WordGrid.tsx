@@ -9,7 +9,6 @@ import {
 } from '../stuff/slices/WordGridSlice';
 import { DirectionPicker } from './bulk/DirectionPicker';
 import {
-  Candy,
   COLOR_BLUE_TRANS,
   COLOR_ERROR,
   COLOR_PREVIEW,
@@ -22,7 +21,7 @@ import {
 
 import './WordGrid.css';
 
-export const WG_WIDTH = 19;
+export const WG_WIDTH = 9;
 export const WG_HEIGHT = 9;
 
 export const WordGrid = () => {

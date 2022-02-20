@@ -9,10 +9,13 @@ export const TILE_MARGIN = 1;
 export const TILE_SHADOW_WIDTH = TILE_MARGIN / 2;
 export const ODD_ROW_OFFSET = TILE_DIAMETER / 2 + TILE_MARGIN / 2;
 export const TILE_UNITS = 'vh';
+
 export const COLOR_BLUE_MAIN = '#007bff';
 export const COLOR_BLUE_TRANS = COLOR_BLUE_MAIN + '80';
 export const COLOR_ERROR = '#dc3545';
 export const COLOR_PREVIEW = '#ffc107';
+export const COLOR_GREEN_MAIN = '#28a745';
+export const COLOR_PURPLE_MAIN = '#9c27b0';
 
 export interface Candy {
   icon: IconProp;

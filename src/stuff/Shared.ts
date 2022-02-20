@@ -1,4 +1,5 @@
 import { Candy } from '../modules/bulk/NetwordsTile';
+import { dictContains } from './dictionary';
 
 /**
  * Possible game statuses; changes what actions are available to players.
@@ -82,10 +83,11 @@ export const AreTilesAdjacent = (tileA: NWTData, tileB: NWTData) => {
 };
 
 /**
- * Checks if the 'word' a player made is actually in the dictionary.
+ * Checks if the 'word' a player made is valid.
  *
- * TODO: Make this actually check.
- * @param letters The letters on the tile the player has selected.
+ * Makes sure it hasn't already been placed, and that it's in the dictionary.
+ *
+ * @param word Stringified version of tiles the player has selected.
  * @param wordsPlaced List of already-chosen words.
  * @returns true if it's a valid word; false otherwise
  */
@@ -93,8 +95,15 @@ export const IsValidWord = (word: string, wordsPlaced: string[]) => {
   console.log(`checking if '${word}' is a valid word`);
 
   if (wordsPlaced.includes(word)) {
+    console.log(`no, '${word}' is not valid; already submitted`);
     return false;
   }
+
+  if (!dictContains(word)) {
+    console.log(`no, '${word}' is not valid; not in dictionary`);
+    return false;
+  }
+
   console.log(`confirmed, '${word}' is a valid word`);
   return true;
 };

@@ -14,7 +14,7 @@
   --color-pink-trans: #ec407a80;
   --color-fink-focus: #e91e63;
 
-  --word-grid-width: 19;
+  --word-grid-width: 9;
   --word-grid-height: 9;
 
   --suggestion-shadow: 0 0 0 var(--tile-shadow-width) var(--color-blue-trans);

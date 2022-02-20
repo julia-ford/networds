@@ -4,23 +4,30 @@ import {
   PayloadAction,
   createSelector
 } from '@reduxjs/toolkit';
-import { faStar } from '@fortawesome/free-solid-svg-icons';
+import {
+  faStar,
+  faBell,
+  faAppleWhole
+} from '@fortawesome/free-solid-svg-icons';
 import {
   AreTilesSame,
   Directions,
-  GameModes,
   GetOppositeDirection,
   NWTData
 } from '../Shared';
 import { RootState } from '../store';
 import { WG_HEIGHT, WG_WIDTH } from '../../modules/WordGrid';
-import { Candy } from '../../modules/bulk/NetwordsTile';
+import {
+  Candy,
+  COLOR_GREEN_MAIN,
+  COLOR_PURPLE_MAIN
+} from '../../modules/bulk/NetwordsTile';
 import {
   selectWipChosen,
   selectWipChosenLetter,
   selectWipTiles
 } from './WordInProgressSlice';
-import { selectChosenDirection, selectGameMode } from './GameSlice';
+import { selectChosenDirection } from './GameSlice';
 
 interface WordGridState {
   words: NWTData[][];
@@ -36,8 +43,28 @@ const wordGridSlice = createSlice<
     words: [],
     candies: [
       {
+        row: 0,
+        col: 0,
+        candy: {
+          icon: faAppleWhole,
+          colorMain: COLOR_GREEN_MAIN,
+          colorText: 'white',
+          isValidStart: false
+        }
+      },
+      {
+        row: 8,
+        col: 8,
+        candy: {
+          icon: faBell,
+          colorMain: COLOR_PURPLE_MAIN,
+          colorText: 'white',
+          isValidStart: false
+        }
+      },
+      {
         row: 4,
-        col: 9,
+        col: 4,
         candy: {
           icon: faStar,
           colorMain: '#ec407a',
@@ -73,9 +100,11 @@ export const selectWordGridWords = (state: RootState) => state.wordGrid.words;
 
 export const selectPlacedWordsAsStrings = (state: RootState) => {
   return state.wordGrid.words.map((wordAsTiles) => {
-    return wordAsTiles.reduce((prev, curr) => {
-      return { letter: prev.letter! + curr.letter!, row: -1, col: -1 };
-    }).letter!;
+    return wordAsTiles
+      .reduce((prev, curr) => {
+        return { letter: prev.letter! + curr.letter!, row: -1, col: -1 };
+      })
+      .letter!.toLowerCase();
   });
 };
 

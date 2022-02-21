@@ -1,15 +1,11 @@
-import {
-  NetwordsTile,
-  TILE_DIAMETER,
-  TILE_MARGIN,
-  TILE_UNITS
-} from './bulk/NetwordsTile';
-import { GameModes } from '../stuff/Shared';
 import { useAppDispatch, useAppSelector } from '../stuff/hooks';
-
-import './WordInProgress.css';
+import { GameModes } from '../stuff/Shared';
+import { TILE_DIAMETER, TILE_MARGIN, TILE_UNITS } from '../stuff/StylingStuff';
 import { chooseWIPTile } from '../stuff/slices/WordInProgressSlice';
 import { setGameMode } from '../stuff/slices/GameSlice';
+import { NetwordsTile } from './bulk/NetwordsTile';
+
+import './WordInProgress.css';
 
 export const WordInProgress = () => {
   const gameMode = useAppSelector((state) => state.game.gameMode);

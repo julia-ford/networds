@@ -1,19 +1,19 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
-import { Directions, GameModes } from '../../stuff/Shared';
 
-import './DirectionPicker.css';
+import { Directions, GameModes } from '../../stuff/Shared';
 import { useAppDispatch, useAppSelector } from '../../stuff/hooks';
 import {
-  GetLeftOffset,
-  GetTopOffset,
   ODD_ROW_OFFSET,
   TILE_DIAMETER,
   TILE_MARGIN,
   TILE_UNITS
-} from './NetwordsTile';
+} from '../../stuff/StylingStuff';
 import { setChosenDirection, setGameMode } from '../../stuff/slices/GameSlice';
+import { GetLeftOffset, GetTopOffset } from './NetwordsTile';
+
+import './DirectionPicker.css';
 
 interface DPProps {
   direction: Directions;

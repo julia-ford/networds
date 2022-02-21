@@ -6,6 +6,7 @@ import {
   addWord,
   clearChosenSpace,
   selectPlacedWordsAsStrings,
+  selectPreviewHasErrors,
   selectPreviewWord
 } from '../stuff/slices/WordGridSlice';
 import {
@@ -22,6 +23,7 @@ export const ButtonBar = () => {
   const wordInProgressAsString = useAppSelector(selectWordInProgressAsString);
   const previewTiles = useAppSelector(selectPreviewWord);
   const placedWords = useAppSelector(selectPlacedWordsAsStrings);
+  const previewHasErrors = useAppSelector(selectPreviewHasErrors);
 
   const dispatch = useAppDispatch();
 
@@ -37,7 +39,8 @@ export const ButtonBar = () => {
       GameModes.ConfirmingChoices
     ].includes(gameMode) || wordInProgressLength === 0;
 
-  const isConfirmDisabled = gameMode !== GameModes.ConfirmingChoices;
+  const isConfirmDisabled =
+    gameMode !== GameModes.ConfirmingChoices || previewHasErrors;
 
   const onSubmitClicked = () => {
     // Should not be able to hit submit if not in BuildingWord state or if no

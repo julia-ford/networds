@@ -1,6 +1,14 @@
 import React, { CSSProperties, ReactNode } from 'react';
+
 import { useAppDispatch, useAppSelector } from '../stuff/hooks';
 import { Directions, GameModes } from '../stuff/Shared';
+import {
+  COLOR_BLUE_TRANS,
+  COLOR_RED_MAIN,
+  COLOR_YELLOW_MAIN,
+  TILE_SHADOW_WIDTH,
+  TILE_UNITS
+} from '../stuff/StylingStuff';
 import { setGameMode } from '../stuff/slices/GameSlice';
 import {
   chooseWordGridSpace,
@@ -8,21 +16,9 @@ import {
   WGTileData
 } from '../stuff/slices/WordGridSlice';
 import { DirectionPicker } from './bulk/DirectionPicker';
-import {
-  COLOR_BLUE_TRANS,
-  COLOR_ERROR,
-  COLOR_PREVIEW,
-  GetLeftOffset,
-  GetTopOffset,
-  NetwordsTile,
-  TILE_SHADOW_WIDTH,
-  TILE_UNITS
-} from './bulk/NetwordsTile';
+import { GetLeftOffset, GetTopOffset, NetwordsTile } from './bulk/NetwordsTile';
 
 import './WordGrid.css';
-
-export const WG_WIDTH = 9;
-export const WG_HEIGHT = 9;
 
 export const WordGrid = () => {
   const dispatch = useAppDispatch();
@@ -114,13 +110,13 @@ const WGTile = ({
 
   // Error, preview, and candy background colors.
   if (wgHasErrors && wgTileData.isInPreview) {
-    style.backgroundColor = COLOR_ERROR;
+    style.backgroundColor = COLOR_RED_MAIN;
     style.color = 'white';
-    style.boxShadow = `0 0 0 ${TILE_SHADOW_WIDTH}${TILE_UNITS} ${COLOR_ERROR}80`;
+    style.boxShadow = `0 0 0 ${TILE_SHADOW_WIDTH}${TILE_UNITS} ${COLOR_RED_MAIN}80`;
   } else if (wgTileData.isInPreview) {
-    style.backgroundColor = COLOR_PREVIEW;
+    style.backgroundColor = COLOR_YELLOW_MAIN;
     style.color = 'black';
-    style.boxShadow = `0 0 0 ${TILE_SHADOW_WIDTH}${TILE_UNITS} ${COLOR_PREVIEW}80`;
+    style.boxShadow = `0 0 0 ${TILE_SHADOW_WIDTH}${TILE_UNITS} ${COLOR_YELLOW_MAIN}80`;
   } else if (wgTileData.candy && wgTileData.letter) {
     style.backgroundColor = wgTileData.candy.colorMain;
     style.color = wgTileData.candy.colorText;

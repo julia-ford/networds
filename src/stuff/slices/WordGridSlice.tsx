@@ -9,6 +9,7 @@ import {
   faBell,
   faAppleWhole
 } from '@fortawesome/free-solid-svg-icons';
+
 import {
   AreTilesSame,
   Directions,
@@ -16,12 +17,13 @@ import {
   NWTData
 } from '../Shared';
 import { RootState } from '../store';
-import { WG_HEIGHT, WG_WIDTH } from '../../modules/WordGrid';
 import {
-  Candy,
   COLOR_GREEN_MAIN,
+  COLOR_PINK_MAIN,
   COLOR_PURPLE_MAIN
-} from '../../modules/bulk/NetwordsTile';
+} from '../StylingStuff';
+import { WG_HEIGHT, WG_WIDTH } from '../StylingStuff';
+import { Candy } from '../../modules/bulk/NetwordsTile';
 import {
   selectWipChosen,
   selectWipChosenLetter,
@@ -67,7 +69,7 @@ const wordGridSlice = createSlice<
         col: 4,
         candy: {
           icon: faStar,
-          colorMain: '#ec407a',
+          colorMain: COLOR_PINK_MAIN,
           colorText: 'white',
           isValidStart: true
         }
@@ -250,6 +252,13 @@ export const selectWordGridTilesState = createSelector(
     }
 
     return wordGrid;
+  }
+);
+
+export const selectPreviewHasErrors = createSelector(
+  [selectWordGridTilesState],
+  (wgTiles) => {
+    return wgTiles.hasErrors ?? false;
   }
 );
 

@@ -1,16 +1,8 @@
 import React from 'react';
-import './LetterCloud.css';
-import {
-  NetwordsTile,
-  TILE_DIAMETER,
-  TILE_MARGIN,
-  TILE_UNITS,
-  GetLeftOffset,
-  GetTopOffset
-} from './bulk/NetwordsTile';
-import { AreTilesAdjacent, GameModes, NWTData } from '../stuff/Shared';
-import { TileConnector } from './bulk/TileConnector';
+
 import { useAppDispatch, useAppSelector } from '../stuff/hooks';
+import { AreTilesAdjacent, GameModes, NWTData } from '../stuff/Shared';
+import { TILE_DIAMETER, TILE_MARGIN, TILE_UNITS } from '../stuff/StylingStuff';
 import {
   dequeueConnector,
   enqueueConnector
@@ -21,6 +13,10 @@ import {
   removeLastTile,
   wipContains
 } from '../stuff/slices/WordInProgressSlice';
+import { NetwordsTile, GetLeftOffset, GetTopOffset } from './bulk/NetwordsTile';
+import { TileConnector } from './bulk/TileConnector';
+
+import './LetterCloud.css';
 
 const CLOUD_DIAM = TILE_DIAMETER * 5 + TILE_MARGIN * 6;
 

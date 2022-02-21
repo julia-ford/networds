@@ -1,22 +1,4 @@
 :root {
-  --tile-diam: 5vh;
-  --tile-margin: 1vh;
-  --tile-font-size: calc(var(--tile-diam) * 2 / 3);
-  --tile-shadow-width: calc(var(--tile-margin) / 2);
-
-  --color-gray-main: #f8f9fa;
-  --color-gray-focus: #e2e6ea;
-  --color-blue-main: #007bff;
-  --color-blue-trans: #007bff80;
-  --color-blue-focus: #0069d9;
-
-  --color-pink-main: #ec407a;
-  --color-pink-trans: #ec407a80;
-  --color-fink-focus: #e91e63;
-
-  --word-grid-width: 9;
-  --word-grid-height: 9;
-
   --suggestion-shadow: 0 0 0 var(--tile-shadow-width) var(--color-blue-trans);
 }
 

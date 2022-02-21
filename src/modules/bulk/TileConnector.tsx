@@ -1,5 +1,7 @@
-import { GetLeftOffset, GetTopOffset, TILE_DIAMETER } from './NetwordsTile';
 import { NWTData } from '../../stuff/Shared';
+import { TILE_DIAMETER } from '../../stuff/StylingStuff';
+import { GetLeftOffset, GetTopOffset } from './NetwordsTile';
+
 import './TileConnector.css';
 
 interface TCProps {

@@ -22,7 +22,7 @@ import {
   COLOR_PINK_MAIN,
   COLOR_PURPLE_MAIN
 } from '../StylingStuff';
-import { WG_HEIGHT, WG_WIDTH } from '../StylingStuff';
+import { WG_TILE_HEIGHT, WG_TILE_WIDTH } from '../StylingStuff';
 import { Candy } from '../../modules/bulk/NetwordsTile';
 import {
   selectWipChosen,
@@ -184,9 +184,9 @@ export const selectWordGridTilesState = createSelector(
   (chosenSpace, candies, words, wipChosenLetter, previewWord) => {
     // Make blank grid of correct dimensions.
     const wordGrid: WGTileData[][] & { hasErrors?: boolean } = [];
-    for (let row = 0; row < WG_HEIGHT; row++) {
+    for (let row = 0; row < WG_TILE_HEIGHT; row++) {
       const rowArray: WGTileData[] = [];
-      for (let col = 0; col < WG_WIDTH; col++) {
+      for (let col = 0; col < WG_TILE_WIDTH; col++) {
         rowArray.push({
           isJunction: false,
           isChosen: !!chosenSpace && AreTilesSame({ row, col }, chosenSpace),
@@ -234,8 +234,8 @@ export const selectWordGridTilesState = createSelector(
         return (
           previewTile.row >= 0 &&
           previewTile.col >= 0 &&
-          previewTile.row < WG_HEIGHT &&
-          previewTile.col < WG_WIDTH
+          previewTile.row < WG_TILE_HEIGHT &&
+          previewTile.col < WG_TILE_WIDTH
         );
       });
 

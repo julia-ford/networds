@@ -7,7 +7,9 @@ import {
   COLOR_RED_MAIN,
   COLOR_YELLOW_MAIN,
   TILE_SHADOW_WIDTH,
-  TILE_UNITS
+  TILE_UNITS,
+  WG_DRAW_HEIGHT,
+  WG_DRAW_WIDTH
 } from '../stuff/StylingStuff';
 import { setGameMode } from '../stuff/slices/GameSlice';
 import {
@@ -19,6 +21,7 @@ import { DirectionPicker } from './bulk/DirectionPicker';
 import { GetLeftOffset, GetTopOffset, NetwordsTile } from './bulk/NetwordsTile';
 
 import './WordGrid.css';
+import { TileConnector } from './bulk/TileConnector';
 
 export const WordGrid = () => {
   const dispatch = useAppDispatch();
@@ -26,6 +29,8 @@ export const WordGrid = () => {
   const gameMode = useAppSelector((state) => state.game.gameMode);
 
   const wordGrid = useAppSelector(selectWordGridTilesState);
+
+  const placedWords = useAppSelector((state) => state.wordGrid.words);
 
   const tiles = wordGrid.map((row, rowIndex) => {
     return row.map((tile, colIndex) => {
@@ -57,6 +62,23 @@ export const WordGrid = () => {
     });
   });
 
+  const connectors: ReactNode[] = [];
+  placedWords.forEach((word) => {
+    word.forEach((tileData, index) => {
+      if (index === 0) {
+        return null;
+      }
+      const prev = word[index - 1];
+      connectors.push(
+        <TileConnector
+          key={`(${prev.row}, ${prev.col}) to (${tileData.row}, ${tileData.col})`}
+          prev={prev}
+          next={tileData}
+        ></TileConnector>
+      );
+    });
+  });
+
   let directionPickers: ReactNode[] = [];
   if (gameMode === GameModes.ChoosingDirection) {
     directionPickers = Object.values(Directions).map((dir) => {
@@ -72,6 +94,18 @@ export const WordGrid = () => {
   return (
     <div className={`WordGrid ${gameMode}`}>
       {tiles}
+      <svg
+        width={`${WG_DRAW_WIDTH}`}
+        height={`${WG_DRAW_HEIGHT}`}
+        viewBox={`0 0 ${WG_DRAW_WIDTH} ${WG_DRAW_HEIGHT}`}
+        xmlns='http://www.w3.org/2000/svg'
+        style={{
+          width: `${WG_DRAW_WIDTH}${TILE_UNITS}`,
+          height: `${WG_DRAW_HEIGHT}${TILE_UNITS}`
+        }}
+      >
+        {[...connectors /*, ...fadingConnectors*/]}
+      </svg>
       {directionPickers}
     </div>
   );

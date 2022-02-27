@@ -129,6 +129,8 @@ const WGTile = ({
   nwTileData,
   onClick
 }: WGTProps) => {
+  const unitSize = useAppSelector(selectUnitSize);
+
   // Left and top offsets.
   const leftOffset = useAppSelector((state) => {
     return selectLeftOffset(state, nwTileData);
@@ -144,9 +146,13 @@ const WGTile = ({
   // Chosen tile box-shadow indicator.
   if (wgTileData?.isChosen) {
     if (wgTileData.candy) {
-      style.boxShadow = `0 0 0 ${TILE_SHADOW_WIDTH}${TILE_UNITS} ${wgTileData.candy.colorMain}80`;
+      style.boxShadow = `0 0 0 ${TILE_SHADOW_WIDTH * unitSize}${TILE_UNITS} ${
+        wgTileData.candy.colorMain
+      }80`;
     } else {
-      style.border = `0 0 0 ${TILE_SHADOW_WIDTH}${TILE_UNITS} ${COLOR_BLUE_TRANS}`;
+      style.border = `0 0 0 ${
+        TILE_SHADOW_WIDTH * unitSize
+      }${TILE_UNITS} ${COLOR_BLUE_TRANS}`;
     }
   }
 
@@ -154,11 +160,15 @@ const WGTile = ({
   if (wgHasErrors && wgTileData.isInPreview) {
     style.backgroundColor = COLOR_RED_MAIN;
     style.color = 'white';
-    style.boxShadow = `0 0 0 ${TILE_SHADOW_WIDTH}${TILE_UNITS} ${COLOR_RED_MAIN}80`;
+    style.boxShadow = `0 0 0 ${
+      TILE_SHADOW_WIDTH * unitSize
+    }${TILE_UNITS} ${COLOR_RED_MAIN}80`;
   } else if (wgTileData.isInPreview) {
     style.backgroundColor = COLOR_YELLOW_MAIN;
     style.color = 'black';
-    style.boxShadow = `0 0 0 ${TILE_SHADOW_WIDTH}${TILE_UNITS} ${COLOR_YELLOW_MAIN}80`;
+    style.boxShadow = `0 0 0 ${
+      TILE_SHADOW_WIDTH * unitSize
+    }${TILE_UNITS} ${COLOR_YELLOW_MAIN}80`;
   } else if (wgTileData.candy && wgTileData.letter) {
     style.backgroundColor = wgTileData.candy.colorMain;
     style.color = wgTileData.candy.colorText;

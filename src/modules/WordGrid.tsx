@@ -1,42 +1,47 @@
 import React, { CSSProperties, ReactNode } from 'react';
 
 import { useAppDispatch, useAppSelector } from '../stuff/hooks';
-import { Directions, GameModes } from '../stuff/Shared';
+import { Directions, GameModes, NWTData } from '../stuff/Shared';
 import {
   COLOR_BLUE_TRANS,
   COLOR_RED_MAIN,
   COLOR_YELLOW_MAIN,
+  selectUnitSize,
   TILE_SHADOW_WIDTH,
   TILE_UNITS,
   WG_DRAW_HEIGHT,
   WG_DRAW_WIDTH
-} from '../stuff/StylingStuff';
+} from '../stuff/slices/StylingSlice';
 import { setGameMode } from '../stuff/slices/GameSlice';
 import {
   chooseWordGridSpace,
   selectWordGridTilesState,
   WGTileData
 } from '../stuff/slices/WordGridSlice';
+import {
+  selectLeftOffset,
+  selectTopOffset
+} from '../stuff/slices/StylingSlice';
 import { DirectionPicker } from './bulk/DirectionPicker';
-import { GetLeftOffset, GetTopOffset, NetwordsTile } from './bulk/NetwordsTile';
+import { NetwordsTile } from './bulk/NetwordsTile';
 
 import './WordGrid.css';
 import { TileConnector } from './bulk/TileConnector';
 
 export const WordGrid = () => {
-  const dispatch = useAppDispatch();
-
   const gameMode = useAppSelector((state) => state.game.gameMode);
 
   const wordGrid = useAppSelector(selectWordGridTilesState);
 
   const placedWords = useAppSelector((state) => state.wordGrid.words);
 
+  const unitSize = useAppSelector(selectUnitSize);
+
+  const dispatch = useAppDispatch();
+
   const tiles = wordGrid.map((row, rowIndex) => {
     return row.map((tile, colIndex) => {
       const tileData = { row: rowIndex, col: colIndex };
-      const leftOffset = GetLeftOffset(tileData);
-      const topOffset = GetTopOffset(tileData);
 
       let onClick: undefined | (() => void);
       if (gameMode === GameModes.ChoosingBoardSpace && tile.isValidChoice) {
@@ -54,8 +59,7 @@ export const WordGrid = () => {
           className={`WGTile ${tile.letter ? 'WithLetter' : ''} ${
             tile.isJunction ? 'Junction' : ''
           }`}
-          leftOffset={leftOffset}
-          topOffset={topOffset}
+          nwTileData={tileData}
           onClick={onClick}
         ></WGTile>
       );
@@ -95,13 +99,13 @@ export const WordGrid = () => {
     <div className={`WordGrid ${gameMode}`}>
       {tiles}
       <svg
-        width={`${WG_DRAW_WIDTH}`}
-        height={`${WG_DRAW_HEIGHT}`}
-        viewBox={`0 0 ${WG_DRAW_WIDTH} ${WG_DRAW_HEIGHT}`}
+        width={`${WG_DRAW_WIDTH * unitSize}`}
+        height={`${WG_DRAW_HEIGHT * unitSize}`}
+        viewBox={`0 0 ${WG_DRAW_WIDTH * unitSize} ${WG_DRAW_HEIGHT * unitSize}`}
         xmlns='http://www.w3.org/2000/svg'
         style={{
-          width: `${WG_DRAW_WIDTH}${TILE_UNITS}`,
-          height: `${WG_DRAW_HEIGHT}${TILE_UNITS}`
+          width: `${WG_DRAW_WIDTH * unitSize}${TILE_UNITS}`,
+          height: `${WG_DRAW_HEIGHT * unitSize}${TILE_UNITS}`
         }}
       >
         {[...connectors /*, ...fadingConnectors*/]}
@@ -115,19 +119,23 @@ interface WGTProps {
   wgHasErrors: boolean;
   wgTileData: WGTileData;
   className: string;
-  leftOffset: number;
-  topOffset: number;
+  nwTileData: NWTData;
   onClick?: () => void;
 }
 const WGTile = ({
   wgHasErrors,
   wgTileData,
   className,
-  leftOffset,
-  topOffset,
+  nwTileData,
   onClick
 }: WGTProps) => {
   // Left and top offsets.
+  const leftOffset = useAppSelector((state) => {
+    return selectLeftOffset(state, nwTileData);
+  });
+  const topOffset = useAppSelector((state) => {
+    return selectTopOffset(state, nwTileData);
+  });
   let style: CSSProperties = {
     left: `${leftOffset}${TILE_UNITS}`,
     top: `${topOffset}${TILE_UNITS}`

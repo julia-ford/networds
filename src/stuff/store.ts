@@ -3,13 +3,15 @@ import letterCloudReducer from './slices/LetterCloudSlice';
 import wordGridReducer from './slices/WordGridSlice';
 import gameReducer from './slices/GameSlice';
 import wordInProgressReducer from './slices/WordInProgressSlice';
+import stylingReducer from './slices/StylingSlice';
 
 const store = configureStore({
   reducer: {
     game: gameReducer,
     letterCloud: letterCloudReducer,
     wordInProgress: wordInProgressReducer,
-    wordGrid: wordGridReducer
+    wordGrid: wordGridReducer,
+    styling: stylingReducer
   }
 });
 

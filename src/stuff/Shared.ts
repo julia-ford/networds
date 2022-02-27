@@ -59,6 +59,23 @@ export const GetOppositeDirection = (dir: Directions) => {
   }
 };
 
+export const GetRotation = (direction: Directions) => {
+  switch (direction) {
+    case Directions.East:
+      return 0;
+    case Directions.West:
+      return 180;
+    case Directions.Northeast:
+      return 300;
+    case Directions.Southeast:
+      return 60;
+    case Directions.Northwest:
+      return 240;
+    case Directions.Southwest:
+      return 120;
+  }
+};
+
 export interface NWTData {
   row: number;
   col: number;

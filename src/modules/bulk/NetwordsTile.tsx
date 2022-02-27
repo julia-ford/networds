@@ -2,13 +2,6 @@ import { CSSProperties, ReactNode } from 'react';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { NWTData } from '../../stuff/Shared';
-import {
-  ODD_ROW_OFFSET,
-  TILE_DIAMETER,
-  TILE_MARGIN
-} from './../../stuff/StylingStuff';
-
 import './NetwordsTile.css';
 
 export interface Candy {
@@ -52,15 +45,4 @@ export const NetwordsTile = ({
       {content}
     </div>
   );
-};
-
-export const GetLeftOffset = (tileData: NWTData) => {
-  return (
-    tileData.col * (TILE_DIAMETER + TILE_MARGIN) +
-    (tileData.row % 2 === 1 ? ODD_ROW_OFFSET : 0)
-  );
-};
-
-export const GetTopOffset = (tileData: NWTData) => {
-  return tileData.row * (TILE_DIAMETER + TILE_MARGIN);
 };

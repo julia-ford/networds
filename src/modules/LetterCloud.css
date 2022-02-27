@@ -1,11 +1,10 @@
 .LetterCloud {
   display: flex;
+  width: var(--lc-draw-width);
+  height: var(--lc-draw-height);
   flex-direction: column;
   position: relative;
-  width: calc(var(--tile-diam) * 5 + var(--tile-margin) * 6);
-  height: calc(var(--tile-diam) * 5 + var(--tile-margin) * 6);
-  border-radius: calc((var(--tile-diam) * 5 + var(--tile-margin) * 6) / 2);
-  margin-top: var(--tile-margin);
+  margin-top: var(--component-margin);
 }
 
 .LCTile {

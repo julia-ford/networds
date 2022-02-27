@@ -3,6 +3,7 @@
   flex-direction: row;
   position: relative;
   height: var(--tile-diam);
+  min-width: var(--tile-diam);
   border-radius: calc(var(--tile-diam) / 2);
   transition: box-shadow 0.5s, width 0.5s;
 }

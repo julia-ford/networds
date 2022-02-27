@@ -2,7 +2,14 @@ import React from 'react';
 
 import { useAppDispatch, useAppSelector } from '../stuff/hooks';
 import { AreTilesAdjacent, GameModes, NWTData } from '../stuff/Shared';
-import { TILE_DIAMETER, TILE_MARGIN, TILE_UNITS } from '../stuff/StylingStuff';
+import {
+  LC_DRAW_WIDTH,
+  LC_DRAW_HEIGHT,
+  TILE_UNITS,
+  selectLeftOffset,
+  selectTopOffset,
+  selectUnitSize
+} from '../stuff/slices/StylingSlice';
 import {
   dequeueConnector,
   enqueueConnector
@@ -13,12 +20,10 @@ import {
   removeLastTile,
   wipContains
 } from '../stuff/slices/WordInProgressSlice';
-import { NetwordsTile, GetLeftOffset, GetTopOffset } from './bulk/NetwordsTile';
+import { NetwordsTile } from './bulk/NetwordsTile';
 import { TileConnector } from './bulk/TileConnector';
 
 import './LetterCloud.css';
-
-const CLOUD_DIAM = TILE_DIAMETER * 5 + TILE_MARGIN * 6;
 
 export const LetterCloud = () => {
   const letters = useAppSelector((state) => state.letterCloud.letters);
@@ -28,6 +33,7 @@ export const LetterCloud = () => {
   const fadingConnectors = useAppSelector(
     (state) => state.letterCloud.fadingConnectors
   );
+  const unitSize = useAppSelector(selectUnitSize);
 
   const tiles = letters.map((rowOfLetters, row) => {
     return rowOfLetters.map((letter, col) => {
@@ -69,13 +75,13 @@ export const LetterCloud = () => {
     <div className='LetterCloud'>
       {tiles}
       <svg
-        width={`${CLOUD_DIAM}`}
-        height={`${CLOUD_DIAM}`}
-        viewBox={`0 0 ${CLOUD_DIAM} ${CLOUD_DIAM}`}
+        width={`${LC_DRAW_WIDTH * unitSize}`}
+        height={`${LC_DRAW_HEIGHT * unitSize}`}
+        viewBox={`0 0 ${LC_DRAW_WIDTH * unitSize} ${LC_DRAW_HEIGHT * unitSize}`}
         xmlns='http://www.w3.org/2000/svg'
         style={{
-          width: `${CLOUD_DIAM}${TILE_UNITS}`,
-          height: `${CLOUD_DIAM}${TILE_UNITS}`
+          width: `${LC_DRAW_WIDTH * unitSize}${TILE_UNITS}`,
+          height: `${LC_DRAW_HEIGHT * unitSize}${TILE_UNITS}`
         }}
       >
         {[...connectors, ...fadingConnectors]}
@@ -136,8 +142,12 @@ const LCTile = ({ tileData }: LCTProps) => {
 
   const dispatch = useAppDispatch();
 
-  const leftOffset = GetLeftOffset(tileData);
-  const topOffset = GetTopOffset(tileData);
+  const leftOffset = useAppSelector((state) => {
+    return selectLeftOffset(state, tileData);
+  });
+  const topOffset = useAppSelector((state) => {
+    return selectTopOffset(state, tileData);
+  });
 
   let onClick: undefined | (() => void);
   // Make sure we're in word-building mode.

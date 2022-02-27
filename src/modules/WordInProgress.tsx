@@ -1,6 +1,13 @@
 import { useAppDispatch, useAppSelector } from '../stuff/hooks';
-import { GameModes } from '../stuff/Shared';
-import { TILE_DIAMETER, TILE_MARGIN, TILE_UNITS } from '../stuff/StylingStuff';
+import { GameModes, NWTData } from '../stuff/Shared';
+import {
+  selectLeftOffset,
+  selectUnitSize,
+  TILE_DIAMETER,
+  TILE_MARGIN_HORZ,
+  TILE_MARGIN_VERT,
+  TILE_UNITS
+} from '../stuff/slices/StylingSlice';
 import { chooseWIPTile } from '../stuff/slices/WordInProgressSlice';
 import { setGameMode } from '../stuff/slices/GameSlice';
 import { NetwordsTile } from './bulk/NetwordsTile';
@@ -18,13 +25,12 @@ export const WordInProgress = () => {
   const chosenWordGridSpace = useAppSelector(
     (state) => state.wordGrid.chosenSpace
   );
+  const unitSize = useAppSelector(selectUnitSize);
 
   const dispatch = useAppDispatch();
 
   const tiles = tilesFromLetterCloud.map((tileData, index) => {
     const isChosen = chosenWIPTileIndex === index;
-    const leftOffset = index * (TILE_DIAMETER + TILE_MARGIN);
-
     let onClick: undefined | (() => void);
     if (
       !isChosen &&
@@ -37,16 +43,19 @@ export const WordInProgress = () => {
       };
     }
 
+    const wipTileData: NWTData = {
+      row: 0,
+      col: index,
+      letter: tileData.letter
+    };
+
     return (
-      <NetwordsTile
+      <WIPTile
         key={`WIP Tile #${index}`}
-        letter={tileData.letter!}
+        tileData={wipTileData}
         className={`WIPTile ${isChosen ? 'Chosen' : ''}`}
-        style={{
-          left: `${leftOffset}${TILE_UNITS}`
-        }}
         onClick={onClick}
-      ></NetwordsTile>
+      ></WIPTile>
     );
   });
   return (
@@ -54,12 +63,34 @@ export const WordInProgress = () => {
       className={`WordInProgress ${gameMode}`}
       style={{
         width: `${
-          tilesFromLetterCloud.length * TILE_DIAMETER +
-          (tilesFromLetterCloud.length - 1) * TILE_MARGIN
+          tilesFromLetterCloud.length * TILE_DIAMETER * unitSize +
+          (tilesFromLetterCloud.length - 1) * TILE_MARGIN_HORZ * unitSize
         }${TILE_UNITS}`
       }}
     >
       {tiles}
     </div>
+  );
+};
+
+interface WIPTProps {
+  tileData: NWTData;
+  className: string;
+  onClick?: () => void;
+}
+const WIPTile = ({ tileData, className, onClick }: WIPTProps) => {
+  const leftOffset = useAppSelector((state) =>
+    selectLeftOffset(state, tileData)
+  );
+
+  return (
+    <NetwordsTile
+      className={className}
+      onClick={onClick}
+      letter={tileData.letter}
+      style={{
+        left: `${leftOffset}${TILE_UNITS}`
+      }}
+    ></NetwordsTile>
   );
 };

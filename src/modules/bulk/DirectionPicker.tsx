@@ -2,16 +2,14 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
-import { Directions, GameModes } from '../../stuff/Shared';
+import { Directions, GameModes, GetRotation } from '../../stuff/Shared';
 import { useAppDispatch, useAppSelector } from '../../stuff/hooks';
 import {
-  ODD_ROW_OFFSET,
-  TILE_DIAMETER,
-  TILE_MARGIN,
+  selectLeftOffsetForDirPicker,
+  selectTopOffsetForDirPicker,
   TILE_UNITS
-} from '../../stuff/StylingStuff';
+} from '../../stuff/slices/StylingSlice';
 import { setChosenDirection, setGameMode } from '../../stuff/slices/GameSlice';
-import { GetLeftOffset, GetTopOffset } from './NetwordsTile';
 
 import './DirectionPicker.css';
 
@@ -25,34 +23,19 @@ export const DirectionPicker = ({ direction }: DPProps) => {
   const dispatch = useAppDispatch();
 
   if (!chosenSpace) {
-    return null;
+    throw new Error(
+      'Attempted to create a direction picker without a chosen space.'
+    );
   }
 
-  let leftOffset = GetLeftOffset(chosenSpace);
-  let topOffset = GetTopOffset(chosenSpace);
-  let rotation = 0;
-  if (direction === Directions.East) {
-    leftOffset += TILE_MARGIN + TILE_DIAMETER;
-  } else if (direction === Directions.West) {
-    leftOffset -= TILE_MARGIN + TILE_DIAMETER;
-    rotation = 180;
-  } else if (direction === Directions.Northeast) {
-    leftOffset += ODD_ROW_OFFSET;
-    topOffset -= TILE_MARGIN + TILE_DIAMETER;
-    rotation = 300;
-  } else if (direction === Directions.Southeast) {
-    leftOffset += ODD_ROW_OFFSET;
-    topOffset += TILE_MARGIN + TILE_DIAMETER;
-    rotation = 60;
-  } else if (direction === Directions.Northwest) {
-    leftOffset -= ODD_ROW_OFFSET;
-    topOffset -= TILE_MARGIN + TILE_DIAMETER;
-    rotation = 240;
-  } else if (direction === Directions.Southwest) {
-    leftOffset -= ODD_ROW_OFFSET;
-    topOffset += TILE_MARGIN + TILE_DIAMETER;
-    rotation = 120;
-  }
+  const rotation = GetRotation(direction);
+
+  let leftOffset = useAppSelector((state) => {
+    return selectLeftOffsetForDirPicker(state, chosenSpace, direction);
+  });
+  let topOffset = useAppSelector((state) => {
+    return selectTopOffsetForDirPicker(state, chosenSpace, direction);
+  });
 
   const onClick = () => {
     if (gameMode === GameModes.ChoosingDirection) {

@@ -18,4 +18,5 @@
 
 .TileConnector {
   stroke: var(--color-blue-main);
+  stroke-width: var(--component-margin);
 }

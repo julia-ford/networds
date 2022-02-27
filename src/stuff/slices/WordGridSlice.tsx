@@ -21,8 +21,8 @@ import {
   COLOR_GREEN_MAIN,
   COLOR_PINK_MAIN,
   COLOR_PURPLE_MAIN
-} from '../StylingStuff';
-import { WG_TILE_HEIGHT, WG_TILE_WIDTH } from '../StylingStuff';
+} from './StylingSlice';
+import { WG_TILE_HEIGHT, WG_TILE_WIDTH } from './StylingSlice';
 import { Candy } from '../../modules/bulk/NetwordsTile';
 import {
   selectWipChosen,

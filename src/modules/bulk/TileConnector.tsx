@@ -1,6 +1,9 @@
+import { useAppSelector } from '../../stuff/hooks';
 import { NWTData } from '../../stuff/Shared';
-import { TILE_DIAMETER } from '../../stuff/StylingStuff';
-import { GetLeftOffset, GetTopOffset } from './NetwordsTile';
+import {
+  selectLeftOffsetForConnector,
+  selectTopOffsetForConnector
+} from '../../stuff/slices/StylingSlice';
 
 import './TileConnector.css';
 
@@ -10,11 +13,19 @@ interface TCProps {
   fading?: boolean;
 }
 export const TileConnector = ({ prev, next, fading = false }: TCProps) => {
-  const startLeftOffset = GetLeftOffset(prev) + TILE_DIAMETER / 2;
-  const startTopOffset = GetTopOffset(prev) + TILE_DIAMETER / 2;
+  const startLeftOffset = useAppSelector((state) => {
+    return selectLeftOffsetForConnector(state, prev);
+  });
+  const startTopOffset = useAppSelector((state) => {
+    return selectTopOffsetForConnector(state, prev);
+  });
 
-  const endLeftOffset = GetLeftOffset(next) + TILE_DIAMETER / 2;
-  const endTopOffset = GetTopOffset(next) + TILE_DIAMETER / 2;
+  const endLeftOffset = useAppSelector((state) => {
+    return selectLeftOffsetForConnector(state, next);
+  });
+  const endTopOffset = useAppSelector((state) => {
+    return selectTopOffsetForConnector(state, next);
+  });
 
   return (
     <path

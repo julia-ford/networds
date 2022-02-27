@@ -5,6 +5,8 @@
   border-radius: calc(var(--tile-diam) / 2);
   margin-top: calc(var(--tile-diam) + var(--tile-margin-vert));
   margin-bottom: var(--component-margin);
+  margin-left: var(--component-margin);
+  margin-right: var(--component-margin);
   transition: box-shadow 0.5s, width 0.5s;
 }
 

@@ -52,8 +52,8 @@ export const SCREEN_UNITS_TALL =
   LC_DRAW_HEIGHT +
   COMPONENT_MARGIN +
   TILE_DIAMETER;
-export const SCREEN_UNITS_WIDE_MOBILE = WG_DRAW_WIDTH;
-export const SCREEN_UNITS_WIDE_DESK = WG_DRAW_WIDTH * 2 + COMPONENT_MARGIN;
+export const SCREEN_UNITS_WIDE_MOBILE = WG_DRAW_WIDTH + 2 * COMPONENT_MARGIN;
+export const SCREEN_UNITS_WIDE_DESK = WG_DRAW_WIDTH * 2 + 3 * COMPONENT_MARGIN;
 export const MOBILE_WH_RATIO = SCREEN_UNITS_WIDE_MOBILE / SCREEN_UNITS_TALL;
 export const DESK_WH_RATIO = SCREEN_UNITS_WIDE_DESK / SCREEN_UNITS_TALL;
 
@@ -73,8 +73,15 @@ export const COLOR_PURPLE_MAIN = '#9c27b0';
 const calcUnitSize = () => {
   const winW = window.innerWidth;
   const winH = window.innerHeight;
-
-  const unitSize = winH / SCREEN_UNITS_TALL;
+  const winRatio = winW / winH;
+  let unitSize: number;
+  if (winRatio < MOBILE_WH_RATIO) {
+    //Width Limited
+    unitSize = winW / SCREEN_UNITS_WIDE_MOBILE;
+  } else {
+    //Height Limited
+    unitSize = winH / SCREEN_UNITS_TALL;
+  }
 
   /////////////////////////////////////////////////////////////////////////////
   //                             Tile Props                                  //

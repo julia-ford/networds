@@ -124,3 +124,17 @@ export const IsValidWord = (word: string, wordsPlaced: string[]) => {
   console.log(`confirmed, '${word}' is a valid word`);
   return true;
 };
+
+export const TilesToString = (tiles: NWTData[]) => {
+  return tiles
+    .map((tileData) => tileData.letter!)
+    .join('')
+    .toLowerCase();
+};
+
+export const CompareWords = (wordA: NWTData[], wordB: NWTData[]) => {
+  const [wordAString, wordBString] = [wordA, wordB].map(TilesToString);
+  if (wordAString < wordBString) return -1;
+  if (wordAString > wordBString) return 1;
+  return 0;
+};

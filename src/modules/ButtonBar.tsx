@@ -1,6 +1,7 @@
 import React from 'react';
 import { useAppDispatch, useAppSelector } from '../stuff/hooks';
 import { GameModes, IsValidWord } from '../stuff/Shared';
+import { addFoundWord } from '../stuff/slices/FoundWordsSlice';
 import { clearChosenDirection, setGameMode } from '../stuff/slices/GameSlice';
 import {
   addWord,
@@ -19,6 +20,9 @@ import './ButtonBar.css';
 
 export const ButtonBar = () => {
   const gameMode = useAppSelector((state) => state.game.gameMode);
+  const wordInProgressTiles = useAppSelector(
+    (state) => state.wordInProgress.tilesFromLetterCloud
+  );
   const wordInProgressLength = useAppSelector(selectWordInProgressLength);
   const wordInProgressAsString = useAppSelector(selectWordInProgressAsString);
   const previewTiles = useAppSelector(selectPreviewWord);
@@ -49,6 +53,7 @@ export const ButtonBar = () => {
       if (IsValidWord(wordInProgressAsString, placedWords)) {
         const nextStatus = GameModes.ChoosingLocalLetter;
         dispatch(setGameMode(nextStatus));
+        dispatch(addFoundWord([...wordInProgressTiles]));
       }
     }
   };

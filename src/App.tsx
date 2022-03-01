@@ -6,10 +6,16 @@ import { LetterCloud } from './modules/LetterCloud';
 import { WordGrid } from './modules/WordGrid';
 import { WordInProgress } from './modules/WordInProgress';
 import { ButtonBar } from './modules/ButtonBar';
-import { useAppDispatch } from './stuff/hooks';
-import { updateUnitSize } from './stuff/slices/StylingSlice';
+import { useAppDispatch, useAppSelector } from './stuff/hooks';
+import {
+  selectIsMobileSized,
+  updateUnitSize
+} from './stuff/slices/StylingSlice';
+import { FoundWordsList } from './modules/FoundWordsList';
 
 export const App = () => {
+  const isMobileSized = useAppSelector(selectIsMobileSized);
+
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -21,12 +27,25 @@ export const App = () => {
     window.addEventListener('resize', onWindowResize);
   });
 
+  const nonMobileContent = isMobileSized ? null : (
+    <>
+      <div className='VertLine'></div>
+      <div className='NWCol'>
+        <FoundWordsList></FoundWordsList>
+        <div>rotation controls and/or placed words list</div>
+      </div>
+    </>
+  );
+
   return (
     <div className='App'>
-      <WordGrid></WordGrid>
-      <WordInProgress></WordInProgress>
-      <LetterCloud></LetterCloud>
-      <ButtonBar></ButtonBar>
+      <div className='NWCol'>
+        <WordGrid></WordGrid>
+        <WordInProgress></WordInProgress>
+        <LetterCloud></LetterCloud>
+        <ButtonBar></ButtonBar>
+      </div>
+      {nonMobileContent}
     </div>
   );
 };

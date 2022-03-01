@@ -1,5 +1,7 @@
 :root {
   --suggestion-shadow: 0 0 0 var(--tile-shadow-width) var(--color-blue-trans);
+  --material-shadow: 0 3px 6px rgba(0, 0, 0, 0.16),
+    0 3px 6px rgba(0, 0, 0, 0.23);
 }
 
 .Clickable {
@@ -8,7 +10,25 @@
 
 .App {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
+}
+
+.NWCol {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+
+  min-height: var(--nw-max-height);
+  height: var(--nw-max-height);
+  max-height: var(--nw-max-height);
+  overflow-y: hidden;
+}
+
+.VertLine {
+  width: 1px;
+  height: var(--nw-max-height);
+  background-color: rgba(0, 0, 0, 0.16);
 }

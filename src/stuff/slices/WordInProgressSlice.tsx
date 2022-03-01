@@ -6,7 +6,7 @@ import {
   createSelector
 } from '@reduxjs/toolkit';
 
-import { AreTilesSame, NWTData } from '../Shared';
+import { AreTilesSame, NWTData, TilesToString } from '../Shared';
 import { RootState } from '../store';
 
 interface WordInProgressState {
@@ -67,10 +67,7 @@ export const selectWordInProgressLength = (state: RootState) => {
 };
 
 export const selectWordInProgressAsString = (state: RootState) => {
-  return state.wordInProgress.tilesFromLetterCloud
-    .map((tileData) => tileData.letter!)
-    .join('')
-    .toLowerCase();
+  return TilesToString(state.wordInProgress.tilesFromLetterCloud);
 };
 
 export const selectWipChosenLetter = createSelector(

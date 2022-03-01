@@ -139,6 +139,11 @@ const calcUnitSize = () => {
     `${COMPONENT_MARGIN * unitSize}${TILE_UNITS}`
   );
 
+  document.documentElement.style.setProperty(
+    '--nw-max-height',
+    `${SCREEN_UNITS_TALL * unitSize}${TILE_UNITS}`
+  );
+
   return unitSize;
 };
 
@@ -284,6 +289,22 @@ export const selectLeftOffsetForConnector = createSelector(
 export const selectTopOffsetForConnector = createSelector(
   [selectTopOffset, selectHalfTilePixels],
   (baseTopOffset, halfTilePixels) => baseTopOffset + halfTilePixels
+);
+
+export const selectIsMobileSized = createSelector(
+  [selectUnitSize],
+  (unitSize) => {
+    // Dependency on selectUnitSize forces update whenever unit size changes.
+    const winW = window.innerWidth;
+    const winH = window.innerHeight;
+    const winRatio = winW / winH;
+
+    if (winRatio >= DESK_WH_RATIO) {
+      return false;
+    }
+    // TODO: probably want to be more permissive than this for destop view, but idk.
+    return true;
+  }
 );
 
 export const { updateUnitSize } = stylingSlice.actions;

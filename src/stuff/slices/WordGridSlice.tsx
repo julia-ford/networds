@@ -14,7 +14,8 @@ import {
   AreTilesSame,
   Directions,
   GetOppositeDirection,
-  NWTData
+  NWTData,
+  TilesToString
 } from '../Shared';
 import { RootState } from '../store';
 import {
@@ -102,11 +103,7 @@ export const selectWordGridWords = (state: RootState) => state.wordGrid.words;
 
 export const selectPlacedWordsAsStrings = (state: RootState) => {
   return state.wordGrid.words.map((wordAsTiles) => {
-    return wordAsTiles
-      .reduce((prev, curr) => {
-        return { letter: prev.letter! + curr.letter!, row: -1, col: -1 };
-      })
-      .letter!.toLowerCase();
+    return TilesToString(wordAsTiles);
   });
 };
 

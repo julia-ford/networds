@@ -3,6 +3,7 @@ import letterCloudReducer from './slices/LetterCloudSlice';
 import wordGridReducer from './slices/WordGridSlice';
 import gameReducer from './slices/GameSlice';
 import wordInProgressReducer from './slices/WordInProgressSlice';
+import foundWordsReducer from './slices/FoundWordsSlice';
 import stylingReducer from './slices/StylingSlice';
 
 const store = configureStore({
@@ -11,6 +12,7 @@ const store = configureStore({
     letterCloud: letterCloudReducer,
     wordInProgress: wordInProgressReducer,
     wordGrid: wordGridReducer,
+    foundWords: foundWordsReducer,
     styling: stylingReducer
   }
 });

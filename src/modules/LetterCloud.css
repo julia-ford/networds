@@ -1,10 +1,14 @@
 .LetterCloud {
   display: flex;
-  width: var(--lc-draw-width);
-  height: var(--lc-draw-height);
   flex-direction: column;
   position: relative;
+
+  width: var(--lc-draw-width);
+  height: var(--lc-draw-height);
   margin-top: var(--component-margin);
+  margin-bottom: var(--component-margin);
+
+  background-color: #ffffff14;
 }
 
 .LCTile {

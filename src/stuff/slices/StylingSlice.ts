@@ -42,16 +42,17 @@ export const FWL_DRAW_WIDTH =
 export const FWL_DRAW_HEIGHT =
   FWL_TILE_HEIGHT * TILE_DIAMETER + (FWL_TILE_HEIGHT - 1) * TILE_MARGIN_VERT;
 
-export const SCREEN_UNITS_TALL =
+export const SCREEN_UNITS_TALL_SANS_HEADER =
+  COMPONENT_MARGIN +
   TILE_DIAMETER +
   TILE_MARGIN_VERT +
   WG_DRAW_HEIGHT +
-  COMPONENT_MARGIN +
+  TILE_MARGIN_VERT +
   TILE_DIAMETER +
   COMPONENT_MARGIN +
   LC_DRAW_HEIGHT +
-  COMPONENT_MARGIN +
-  TILE_DIAMETER;
+  COMPONENT_MARGIN;
+export const SCREEN_UNITS_TALL = SCREEN_UNITS_TALL_SANS_HEADER + TILE_DIAMETER;
 export const SCREEN_UNITS_WIDE_MOBILE = WG_DRAW_WIDTH + 2 * COMPONENT_MARGIN;
 export const SCREEN_UNITS_WIDE_DESK = WG_DRAW_WIDTH * 2 + 3 * COMPONENT_MARGIN;
 export const MOBILE_WH_RATIO = SCREEN_UNITS_WIDE_MOBILE / SCREEN_UNITS_TALL;
@@ -140,8 +141,8 @@ const calcUnitSize = () => {
   );
 
   document.documentElement.style.setProperty(
-    '--nw-max-height',
-    `${SCREEN_UNITS_TALL * unitSize}${TILE_UNITS}`
+    '--nw-max-height-sans-header',
+    `${SCREEN_UNITS_TALL_SANS_HEADER * unitSize}${TILE_UNITS}`
   );
 
   return unitSize;

@@ -10,9 +10,24 @@
 
 .App {
   display: flex;
-  flex-direction: row;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
+}
+
+.NWRowOfCols {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+
+  width: 100%;
+  min-height: var(--nw-max-height-sans-header);
+  height: var(--nw-max-height-sans-header);
+  max-height: var(--nw-max-height-sans-header);
+  overflow: hidden;
+
+  background-color: #263238;
 }
 
 .NWCol {
@@ -21,10 +36,10 @@
   justify-content: space-between;
   align-items: center;
 
-  min-height: var(--nw-max-height);
-  height: var(--nw-max-height);
-  max-height: var(--nw-max-height);
-  overflow-y: hidden;
+  min-height: var(--nw-max-height-sans-header);
+  height: var(--nw-max-height-sans-header);
+  max-height: var(--nw-max-height-sans-header);
+  overflow: hidden;
 }
 
 .VertLine {

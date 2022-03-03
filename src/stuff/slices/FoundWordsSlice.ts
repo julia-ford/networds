@@ -5,7 +5,8 @@ import {
   PayloadAction
 } from '@reduxjs/toolkit';
 
-import { CompareWords, NWTData } from '../Shared';
+import { CompareWords, NWTData, TilesToString } from '../Shared';
+import store, { RootState } from '../store';
 
 interface FoundWordsState {
   foundWords: NWTData[][];
@@ -32,6 +33,12 @@ const foundWordsSlice = createSlice<
     }
   }
 });
+
+export const selectFoundWordsAsStrings = (state: RootState) => {
+  return state.foundWords.foundWords.map((word) => {
+    return TilesToString(word);
+  });
+};
 
 export const { addFoundWord, chooseWord, clearChosenWord } =
   foundWordsSlice.actions;

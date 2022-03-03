@@ -6,8 +6,9 @@ import {
   createSelector
 } from '@reduxjs/toolkit';
 
-import { AreTilesSame, NWTData, TilesToString } from '../Shared';
+import { AreTilesSame, IsValidWord, NWTData, TilesToString } from '../Shared';
 import { RootState } from '../store';
+import { selectFoundWordsAsStrings } from './FoundWordsSlice';
 
 interface WordInProgressState {
   tilesFromLetterCloud: NWTData[];
@@ -46,29 +47,47 @@ export const selectWipTiles = (state: RootState) => {
   return state.wordInProgress.tilesFromLetterCloud;
 };
 
-export const wipContains = (state: RootState, tileData: NWTData) => {
+export const selectDoesWipContain = (state: RootState, tileData: NWTData) => {
   return !!state.wordInProgress.tilesFromLetterCloud.find((possibleMatch) => {
     return AreTilesSame(possibleMatch, tileData);
   });
 };
 
-export const selectIsLastTileInWip = (state: RootState, tileData: NWTData) => {
-  return (
-    state.wordInProgress.tilesFromLetterCloud.length &&
-    state.wordInProgress.tilesFromLetterCloud.findIndex((possibleMatch) => {
-      return AreTilesSame(possibleMatch, tileData);
-    }) ===
-      state.wordInProgress.tilesFromLetterCloud.length - 1
-  );
-};
+export const selectLastWipTile = createSelector(
+  [selectWipTiles],
+  (wipTiles) => {
+    if (wipTiles.length < 1) {
+      return undefined;
+    }
 
-export const selectWordInProgressLength = (state: RootState) => {
-  return state.wordInProgress.tilesFromLetterCloud.length;
-};
+    return wipTiles[wipTiles.length - 1];
+  }
+);
 
-export const selectWordInProgressAsString = (state: RootState) => {
-  return TilesToString(state.wordInProgress.tilesFromLetterCloud);
-};
+export const selectSecondToLastWipTile = createSelector(
+  [selectWipTiles],
+  (wipTiles) => {
+    if (wipTiles.length < 2) {
+      return undefined;
+    }
+
+    return wipTiles[wipTiles.length - 2];
+  }
+);
+
+export const selectWordInProgressLength = createSelector(
+  [selectWipTiles],
+  (wipTiles) => {
+    return wipTiles.length;
+  }
+);
+
+export const selectWordInProgressAsString = createSelector(
+  [selectWipTiles],
+  (wipTiles) => {
+    return TilesToString(wipTiles);
+  }
+);
 
 export const selectWipChosenLetter = createSelector(
   [selectWipTiles, selectWipChosen],

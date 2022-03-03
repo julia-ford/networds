@@ -102,16 +102,16 @@ export const AreTilesAdjacent = (tileA: NWTData, tileB: NWTData) => {
 /**
  * Checks if the 'word' a player made is valid.
  *
- * Makes sure it hasn't already been placed, and that it's in the dictionary.
+ * Makes sure it hasn't already been found, and that it's in the dictionary.
  *
  * @param word Stringified version of tiles the player has selected.
- * @param wordsPlaced List of already-chosen words.
+ * @param wordsFound List of already-found words.
  * @returns true if it's a valid word; false otherwise
  */
-export const IsValidWord = (word: string, wordsPlaced: string[]) => {
+export const IsValidWord = (word: string, wordsFound: string[]) => {
   console.log(`checking if '${word}' is a valid word`);
 
-  if (wordsPlaced.includes(word)) {
+  if (wordsFound.includes(word)) {
     console.log(`no, '${word}' is not valid; already submitted`);
     return false;
   }

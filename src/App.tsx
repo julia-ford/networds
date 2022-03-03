@@ -4,14 +4,18 @@ import './App.css';
 
 import { LetterCloud } from './modules/LetterCloud';
 import { WordGrid } from './modules/WordGrid';
-import { WordInProgress } from './modules/WordInProgress';
-import { ButtonBar } from './modules/ButtonBar';
 import { useAppDispatch, useAppSelector } from './stuff/hooks';
 import {
   selectIsMobileSized,
   updateUnitSize
 } from './stuff/slices/StylingSlice';
 import { FoundWordsList } from './modules/FoundWordsList';
+import { stopDragging } from './stuff/slices/GameSlice';
+import { GameModes, IsValidWord, TilesToString } from './stuff/Shared';
+import { addFoundWord } from './stuff/slices/FoundWordsSlice';
+import { clearWordInProgress } from './stuff/slices/WordInProgressSlice';
+import { AppDispatch, RootState } from './stuff/store';
+import { NWHeader } from './modules/NWHeader';
 
 export const App = () => {
   const isMobileSized = useAppSelector(selectIsMobileSized);
@@ -19,13 +23,41 @@ export const App = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
+    console.log('one-time setup');
     const onWindowResize = () => {
-      console.log('resizing');
       dispatch(updateUnitSize(undefined));
     };
 
+    const tryAddingWipToFoundWords = (
+      dispatch: AppDispatch,
+      getState: () => RootState
+    ) => {
+      // logic here that can dispatch actions or read state
+      const state = getState();
+      const wipTiles = state.wordInProgress.tilesFromLetterCloud;
+      const wipString = TilesToString(wipTiles);
+      const foundWordsTiles = state.foundWords.foundWords;
+      const foundWordsStrings = foundWordsTiles.map((word) =>
+        TilesToString(word)
+      );
+      const isWipValid = IsValidWord(wipString, foundWordsStrings);
+
+      const isBuildingWordMode = state.game.gameMode === GameModes.BuildingWord;
+
+      if (isBuildingWordMode && isWipValid) {
+        dispatch(addFoundWord(wipTiles));
+      }
+    };
+
+    const onMouseUp = () => {
+      dispatch(stopDragging(undefined));
+      dispatch(tryAddingWipToFoundWords);
+      dispatch(clearWordInProgress(undefined));
+    };
+
     window.addEventListener('resize', onWindowResize);
-  });
+    window.addEventListener('mouseup', onMouseUp);
+  }, []);
 
   const nonMobileContent = isMobileSized ? null : (
     <>
@@ -39,13 +71,14 @@ export const App = () => {
 
   return (
     <div className='App'>
-      <div className='NWCol'>
-        <WordGrid></WordGrid>
-        <WordInProgress></WordInProgress>
-        <LetterCloud></LetterCloud>
-        <ButtonBar></ButtonBar>
+      <NWHeader></NWHeader>
+      <div className='NWRowOfCols'>
+        <div className='NWCol'>
+          <WordGrid></WordGrid>
+          <LetterCloud></LetterCloud>
+        </div>
+        {nonMobileContent}
       </div>
-      {nonMobileContent}
     </div>
   );
 };

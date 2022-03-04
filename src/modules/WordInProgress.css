@@ -1,0 +1,24 @@
+.WordInProgress {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  height: var(--tile-diam);
+  min-width: var(--tile-diam);
+  border-radius: calc(var(--tile-diam) / 2);
+  transition: box-shadow 0.5s, width 0.5s;
+}
+
+.WIPTile {
+  color: var(--color-blue-main);
+  background-color: var(--color-gray-main);
+}
+
+.WIPTile.Clickable:hover {
+  color: var(--color-blue-focus);
+  background-color: var(--color-gray-focus);
+}
+
+.WIPTile.Chosen {
+  color: white;
+  background-color: var(--color-blue-main);
+}

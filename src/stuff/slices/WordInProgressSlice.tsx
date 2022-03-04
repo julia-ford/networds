@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   createSlice,
   SliceCaseReducers,
@@ -6,9 +5,8 @@ import {
   createSelector
 } from '@reduxjs/toolkit';
 
-import { AreTilesSame, IsValidWord, NWTData, TilesToString } from '../Shared';
+import { AreTilesSame, NWTData, TilesToString } from '../Shared';
 import { RootState } from '../store';
-import { selectFoundWordsAsStrings } from './FoundWordsSlice';
 
 interface WordInProgressState {
   tilesFromLetterCloud: NWTData[];
@@ -38,10 +36,6 @@ const wordInProgressSlice = createSlice<
     }
   }
 });
-
-export const selectWipChosen = (state: RootState) => {
-  return state.wordInProgress.chosenIndex;
-};
 
 export const selectWipTiles = (state: RootState) => {
   return state.wordInProgress.tilesFromLetterCloud;
@@ -86,16 +80,6 @@ export const selectWordInProgressAsString = createSelector(
   [selectWipTiles],
   (wipTiles) => {
     return TilesToString(wipTiles);
-  }
-);
-
-export const selectWipChosenLetter = createSelector(
-  [selectWipTiles, selectWipChosen],
-  (wipTiles, wipChosen) => {
-    if (wipChosen === undefined) {
-      return undefined;
-    }
-    return wipTiles[wipChosen].letter;
   }
 );
 

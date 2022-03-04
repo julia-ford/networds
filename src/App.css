@@ -4,6 +4,12 @@
     0 3px 6px rgba(0, 0, 0, 0.23);
 }
 
+body,
+#root {
+  width: 100%;
+  height: var(--nw-max-height);
+}
+
 .Clickable {
   cursor: pointer;
 }
@@ -26,8 +32,6 @@
   height: var(--nw-max-height-sans-header);
   max-height: var(--nw-max-height-sans-header);
   overflow: hidden;
-
-  background-color: #263238;
 }
 
 .NWCol {

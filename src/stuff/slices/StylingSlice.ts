@@ -50,10 +50,8 @@ export const SCREEN_UNITS_TALL_SANS_HEADER =
   TILE_DIAMETER +
   TILE_MARGIN_VERT +
   WG_DRAW_HEIGHT +
-  TILE_MARGIN_VERT +
-  TILE_DIAMETER +
   COMPONENT_MARGIN +
-  LC_DRAW_HEIGHT +
+  WG_DRAW_HEIGHT +
   COMPONENT_MARGIN;
 export const SCREEN_UNITS_TALL = SCREEN_UNITS_TALL_SANS_HEADER + TILE_DIAMETER;
 export const SCREEN_UNITS_WIDE_MOBILE = WG_DRAW_WIDTH + 2 * COMPONENT_MARGIN;
@@ -157,8 +155,12 @@ const calcUnitSize = () => {
   );
 
   document.documentElement.style.setProperty(
+    '--nw-max-height',
+    `${window.innerHeight}px`
+  );
+  document.documentElement.style.setProperty(
     '--nw-max-height-sans-header',
-    `${SCREEN_UNITS_TALL_SANS_HEADER * unitSize}${TILE_UNITS}`
+    `${window.innerHeight - TILE_DIAMETER * unitSize}${TILE_UNITS}`
   );
 
   return unitSize;

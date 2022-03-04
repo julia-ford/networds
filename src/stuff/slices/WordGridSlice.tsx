@@ -10,13 +10,7 @@ import {
   faAppleWhole
 } from '@fortawesome/free-solid-svg-icons';
 
-import {
-  AreTilesSame,
-  Directions,
-  GetOppositeDirection,
-  NWTData,
-  TilesToString
-} from '../Shared';
+import { AreTilesSame, getNextCoords, NWTData, TilesToString } from '../Shared';
 import { RootState } from '../store';
 import {
   COLOR_GREEN_MAIN,
@@ -25,12 +19,13 @@ import {
 } from './StylingSlice';
 import { WG_TILE_HEIGHT, WG_TILE_WIDTH } from './StylingSlice';
 import { Candy } from '../../modules/bulk/NetwordsTile';
+import { selectChosenDirection, selectOppositeDirection } from './GameSlice';
 import {
-  selectWipChosen,
-  selectWipChosenLetter,
-  selectWipTiles
-} from './WordInProgressSlice';
-import { selectChosenDirection } from './GameSlice';
+  selectChosenLetter,
+  selectChosenLetterString,
+  selectChosenWordLength,
+  selectChosenWordTiles
+} from './FoundWordsSlice';
 
 interface WordGridState {
   words: NWTData[][];
@@ -108,21 +103,20 @@ export const selectPlacedWordsAsStrings = (state: RootState) => {
 };
 
 export const selectFirstPreviewTileCoords = createSelector(
-  [selectWordGridChosenSpace, selectChosenDirection, selectWipChosen],
-  (startCoords, direction, distance) => {
+  [selectWordGridChosenSpace, selectOppositeDirection, selectChosenLetter],
+  (startCoords, oppDir, distance) => {
     // If the player hasn't chosen a space on the word grid, a tile in the
     // word in progress, and a direction to point the word yet, we don't need
     // a preview yet.
-    if (!startCoords || !direction || distance === undefined) {
+    if (!startCoords || !oppDir || distance === undefined) {
       return undefined;
     }
 
     // Find coords of the first tile in the preview by facing the opposite
     // direction and backing up until we reach the start of the word.
-    const revDir = GetOppositeDirection(direction);
     let result = { ...startCoords };
     for (let i = distance; i > 0; i--) {
-      result = getNextCoords(result, revDir);
+      result = getNextCoords(result, oppDir);
     }
 
     return result;
@@ -130,23 +124,23 @@ export const selectFirstPreviewTileCoords = createSelector(
 );
 
 export const selectPreviewWord = createSelector(
-  [selectFirstPreviewTileCoords, selectWipTiles, selectChosenDirection],
-  (firstTileCoords, wipTiles, direction) => {
+  [selectFirstPreviewTileCoords, selectChosenWordTiles, selectChosenDirection],
+  (firstTileCoords, foundWordTiles, direction) => {
     // If we couldn't get the coords for the first tile, or if the direction
-    // hasn't been chosen yet, give up.
-    if (!firstTileCoords || !direction) {
+    // hasn't been chosen yet, or if a word hasn't been chosen yet, give up.
+    if (!firstTileCoords || !foundWordTiles || !direction) {
       return undefined;
     }
 
     // We already got the first tile coords from that other selector,
     // so just slap a letter on it.
     const previewTiles: NWTData[] = [
-      { ...firstTileCoords, letter: wipTiles[0].letter }
+      { ...firstTileCoords, letter: foundWordTiles[0].letter }
     ];
 
     // For all the other tiles, get coords one space forward from the previous
     // tile, and slap on the letter.
-    wipTiles.slice(1).forEach((wipTile, index) => {
+    foundWordTiles.slice(1).forEach((wipTile, index) => {
       previewTiles.push({
         ...getNextCoords(previewTiles[index], direction),
         letter: wipTile.letter
@@ -154,6 +148,48 @@ export const selectPreviewWord = createSelector(
     });
 
     return previewTiles;
+  }
+);
+
+export const selectRotateLeftButtonCoords = createSelector(
+  [selectFirstPreviewTileCoords, selectOppositeDirection],
+  (firstPreviewTileCoords, oppDir) => {
+    if (!firstPreviewTileCoords || !oppDir) {
+      return undefined;
+    }
+    return getNextCoords(firstPreviewTileCoords, oppDir);
+  }
+);
+
+export const selectRotateRightButtonCoords = createSelector(
+  [
+    selectWordGridChosenSpace,
+    selectChosenDirection,
+    selectChosenLetter,
+    selectChosenWordLength
+  ],
+  (startCoords, oppDir, chosenLetterIndex, chosenWordLength) => {
+    // If the player hasn't chosen a space on the word grid, a tile in the
+    // word in progress, and a direction to point the word yet, we don't need
+    // a preview yet.
+    if (
+      !startCoords ||
+      !oppDir ||
+      chosenLetterIndex === undefined ||
+      chosenWordLength === undefined
+    ) {
+      return undefined;
+    }
+
+    // Find coords of the last tile in the preview by facing the chosen
+    // direction stepping forward until we reach the end of the word.
+    // Then go one step further, and you've reaced the correct coords.
+    let result = { ...startCoords };
+    for (let i = chosenLetterIndex; i <= chosenWordLength; i++) {
+      result = getNextCoords(result, oppDir);
+    }
+
+    return result;
   }
 );
 
@@ -175,10 +211,10 @@ export const selectWordGridTilesState = createSelector(
     selectWordGridChosenSpace,
     selectWordGridCandies,
     selectWordGridWords,
-    selectWipChosenLetter,
+    selectChosenLetterString,
     selectPreviewWord
   ],
-  (chosenSpace, candies, words, wipChosenLetter, previewWord) => {
+  (chosenSpace, candies, words, foundWordChosenLetter, previewWord) => {
     // Make blank grid of correct dimensions.
     const wordGrid: WGTileData[][] & { hasErrors?: boolean } = [];
     for (let row = 0; row < WG_TILE_HEIGHT; row++) {
@@ -214,12 +250,12 @@ export const selectWordGridTilesState = createSelector(
           wgTile.isJunction = true;
         }
         wgTile.letter = tileData.letter;
-        if (wipChosenLetter && wgTile.letter === wipChosenLetter) {
+        if (foundWordChosenLetter && wgTile.letter === foundWordChosenLetter) {
           wgTile.isValidChoice = true;
         } else {
           wgTile.isValidChoice = false;
           console.log(
-            `(${tileData.row}, ${tileData.col}) "${wgTile.letter}" does not match "${wipChosenLetter}"`
+            `(${tileData.row}, ${tileData.col}) "${wgTile.letter}" does not match "${foundWordChosenLetter}"`
           );
         }
       });
@@ -258,39 +294,6 @@ export const selectPreviewHasErrors = createSelector(
     return wgTiles.hasErrors ?? false;
   }
 );
-
-const getNextCoords = (tileData: NWTData, direction: Directions) => {
-  const coords: NWTData = {
-    row: tileData.row,
-    col: tileData.col
-  };
-  if (direction === Directions.East) {
-    coords.col += 1;
-  } else if (direction === Directions.West) {
-    coords.col -= 1;
-  } else if (direction === Directions.Northeast) {
-    if (coords.row % 2 === 1) {
-      coords.col += 1;
-    }
-    coords.row -= 1;
-  } else if (direction === Directions.Northwest) {
-    if (coords.row % 2 === 0) {
-      coords.col -= 1;
-    }
-    coords.row -= 1;
-  } else if (direction === Directions.Southeast) {
-    if (coords.row % 2 === 1) {
-      coords.col += 1;
-    }
-    coords.row += 1;
-  } else if (direction === Directions.Southwest) {
-    if (coords.row % 2 === 0) {
-      coords.col -= 1;
-    }
-    coords.row += 1;
-  }
-  return coords;
-};
 
 export const {
   addWord,

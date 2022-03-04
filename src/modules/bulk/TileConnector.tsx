@@ -10,9 +10,8 @@ import './TileConnector.css';
 interface TCProps {
   prev: NWTData;
   next: NWTData;
-  fading?: boolean;
 }
-export const TileConnector = ({ prev, next, fading = false }: TCProps) => {
+export const TileConnector = ({ prev, next }: TCProps) => {
   const startLeftOffset = useAppSelector((state) => {
     return selectLeftOffsetForConnector(state, prev);
   });
@@ -32,7 +31,6 @@ export const TileConnector = ({ prev, next, fading = false }: TCProps) => {
       d={`M ${startLeftOffset} ${startTopOffset} L ${endLeftOffset} ${endTopOffset}`}
       className='TileConnector'
       fill='transparent'
-      style={{ animation: `${fading ? 'fadeOut' : 'fadeIn'} 0.5s` }}
     ></path>
   );
 };

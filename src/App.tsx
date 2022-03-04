@@ -12,7 +12,7 @@ import {
 import { FoundWordsList } from './modules/FoundWordsList';
 import { stopDragging } from './stuff/slices/GameSlice';
 import { GameModes, IsValidWord, TilesToString } from './stuff/Shared';
-import { addFoundWord } from './stuff/slices/FoundWordsSlice';
+import { addFoundWord, clearChosen } from './stuff/slices/FoundWordsSlice';
 import { clearWordInProgress } from './stuff/slices/WordInProgressSlice';
 import { AppDispatch, RootState } from './stuff/store';
 import { NWHeader } from './modules/NWHeader';
@@ -23,7 +23,6 @@ export const App = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    console.log('one-time setup');
     const onWindowResize = () => {
       dispatch(updateUnitSize(undefined));
     };
@@ -42,10 +41,9 @@ export const App = () => {
       );
       const isWipValid = IsValidWord(wipString, foundWordsStrings);
 
-      const isBuildingWordMode = state.game.gameMode === GameModes.BuildingWord;
-
-      if (isBuildingWordMode && isWipValid) {
+      if (isWipValid) {
         dispatch(addFoundWord(wipTiles));
+        dispatch(clearChosen(undefined));
       }
     };
 
@@ -57,7 +55,7 @@ export const App = () => {
 
     window.addEventListener('resize', onWindowResize);
     window.addEventListener('mouseup', onMouseUp);
-  }, []);
+  }, [dispatch]);
 
   const nonMobileContent = isMobileSized ? null : (
     <>

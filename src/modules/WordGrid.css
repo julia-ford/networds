@@ -1,12 +1,16 @@
 .WordGrid {
   position: relative;
+
   width: var(--wg-draw-width);
   height: var(--wg-draw-height);
+
   border-radius: calc(var(--tile-diam) / 2);
+
   margin-top: calc(var(--tile-diam) + var(--tile-margin-vert));
   margin-bottom: var(--component-margin);
   margin-left: var(--component-margin);
   margin-right: var(--component-margin);
+
   transition: box-shadow 0.5s, width 0.5s;
 }
 
@@ -14,12 +18,18 @@
   box-shadow: var(--suggestion-shadow);
 }
 
-.WGTile {
-  background-color: var(--color-gray-main);
+.WordGrid > svg {
+  width: var(--wg-draw-width);
+  height: var(--wg-draw-height);
 }
 
 .WGTile.WithLetter {
   background-color: var(--color-blue-main);
+  color: white;
+}
+
+.WGTile.WithLetter.Clickable:hover {
+  background-color: var(--color-blue-focus);
   color: white;
 }
 

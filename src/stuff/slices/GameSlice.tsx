@@ -2,10 +2,11 @@ import React from 'react';
 import {
   createSlice,
   SliceCaseReducers,
-  PayloadAction
+  PayloadAction,
+  createSelector
 } from '@reduxjs/toolkit';
 
-import { Directions, GameModes } from '../Shared';
+import { Directions, GameModes, GetOppositeDirection } from '../Shared';
 import { RootState } from '../store';
 
 interface GameState {
@@ -43,6 +44,16 @@ export const selectGameMode = (state: RootState) => state.game.gameMode;
 
 export const selectChosenDirection = (state: RootState) =>
   state.game.chosenDirection;
+
+export const selectOppositeDirection = createSelector(
+  [selectChosenDirection],
+  (chosenDir) => {
+    if (chosenDir === undefined) {
+      return undefined;
+    }
+    return GetOppositeDirection(chosenDir);
+  }
+);
 
 export const {
   setGameMode,

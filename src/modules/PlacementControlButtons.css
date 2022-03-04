@@ -1,0 +1,27 @@
+.PlacementControlButton {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: var(--pcb-diam);
+  height: var(--pcb-diam);
+  margin: var(--pcb-margin);
+  border-radius: calc(var(--pcb-diam) / 2);
+
+  cursor: pointer;
+
+  box-shadow: var(--material-shadow);
+
+  transition: color 0.5s, background-color 0.5s, box-shadow 0.5s, width 0.5s,
+    height 0.5s, font-size 0.5s, left 0.5s, top 0.5s;
+}
+
+.ConfirmPlacementButton {
+  background-color: var(--color-green-main);
+  color: white;
+}
+
+.ConfirmPlacementButton:hover {
+  background-color: var(--color-green-focus);
+}

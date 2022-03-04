@@ -42,6 +42,13 @@ export enum Directions {
   Northwest = 'NW'
 }
 
+export interface NWTData {
+  row: number;
+  col: number;
+  letter?: string;
+  candy?: Candy;
+}
+
 export const GetOppositeDirection = (dir: Directions) => {
   switch (dir) {
     case Directions.Northeast:
@@ -76,13 +83,6 @@ export const GetRotation = (direction: Directions) => {
   }
 };
 
-export interface NWTData {
-  row: number;
-  col: number;
-  letter?: string;
-  candy?: Candy;
-}
-
 export const AreTilesSame = (tileA: NWTData, tileB: NWTData) => {
   return tileA.col === tileB.col && tileA.row === tileB.row;
 };
@@ -97,6 +97,39 @@ export const AreTilesAdjacent = (tileA: NWTData, tileB: NWTData) => {
         (tileA.row % 2 === 0 && tileA.col - tileB.col === 1) ||
         (tileB.row % 2 === 0 && tileB.col - tileA.col === 1)))
   );
+};
+
+export const getNextCoords = (tileData: NWTData, direction: Directions) => {
+  const coords: NWTData = {
+    row: tileData.row,
+    col: tileData.col
+  };
+  if (direction === Directions.East) {
+    coords.col += 1;
+  } else if (direction === Directions.West) {
+    coords.col -= 1;
+  } else if (direction === Directions.Northeast) {
+    if (coords.row % 2 === 1) {
+      coords.col += 1;
+    }
+    coords.row -= 1;
+  } else if (direction === Directions.Northwest) {
+    if (coords.row % 2 === 0) {
+      coords.col -= 1;
+    }
+    coords.row -= 1;
+  } else if (direction === Directions.Southeast) {
+    if (coords.row % 2 === 1) {
+      coords.col += 1;
+    }
+    coords.row += 1;
+  } else if (direction === Directions.Southwest) {
+    if (coords.row % 2 === 0) {
+      coords.col -= 1;
+    }
+    coords.row += 1;
+  }
+  return coords;
 };
 
 /**

@@ -18,9 +18,6 @@ export const LetterCloud = () => {
   const wordInProgress = useAppSelector(
     (state) => state.wordInProgress.tilesFromLetterCloud
   );
-  const fadingConnectors = useAppSelector(
-    (state) => state.letterCloud.fadingConnectors
-  );
   const unitSize = useAppSelector(selectUnitSize);
 
   const tiles = letters.map((rowOfLetters, row) => {
@@ -72,7 +69,7 @@ export const LetterCloud = () => {
           height: `${LC_DRAW_HEIGHT * unitSize}${TILE_UNITS}`
         }}
       >
-        {[...connectors, ...fadingConnectors]}
+        {connectors}
       </svg>
     </div>
   );

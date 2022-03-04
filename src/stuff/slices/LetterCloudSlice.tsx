@@ -1,12 +1,7 @@
-import { ReactNode } from 'react';
-import {
-  createSlice,
-  SliceCaseReducers,
-  PayloadAction
-} from '@reduxjs/toolkit';
+import { createSlice, SliceCaseReducers } from '@reduxjs/toolkit';
 
-import { RootState } from '../store';
 import { getRandomLetters } from '../dictionary';
+import { NWTData } from '../Shared';
 
 const date = new Date();
 const tempLetters = getRandomLetters(
@@ -15,7 +10,8 @@ const tempLetters = getRandomLetters(
 
 interface LetterCloudState {
   letters: (string | undefined)[][];
-  fadingConnectors: ReactNode[];
+  angeredLetters: NWTData[];
+  calmdownTodo: NWTData[][];
 }
 const letterCloudSlice = createSlice<
   LetterCloudState,
@@ -24,22 +20,12 @@ const letterCloudSlice = createSlice<
   name: 'letterCloud',
   initialState: {
     letters: tempLetters,
-    fadingConnectors: []
+    angeredLetters: [],
+    calmdownTodo: []
   },
-  reducers: {
-    enqueueConnector: (state, action: PayloadAction<ReactNode>) => {
-      state.fadingConnectors.push(action.payload);
-    },
-    dequeueConnector: (state) => {
-      state.fadingConnectors.shift();
-    }
-  }
+  reducers: {}
 });
 
-export const selectCloudLetters = (state: RootState) => {
-  return state.letterCloud.letters;
-};
-
-export const { enqueueConnector, dequeueConnector } = letterCloudSlice.actions;
+export const {} = letterCloudSlice.actions;
 
 export default letterCloudSlice.reducer;

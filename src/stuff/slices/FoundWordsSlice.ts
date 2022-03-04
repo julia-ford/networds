@@ -2,15 +2,17 @@ import React from 'react';
 import {
   createSlice,
   SliceCaseReducers,
-  PayloadAction
+  PayloadAction,
+  createSelector
 } from '@reduxjs/toolkit';
 
 import { CompareWords, NWTData, TilesToString } from '../Shared';
-import store, { RootState } from '../store';
+import { RootState } from '../store';
 
 interface FoundWordsState {
   foundWords: NWTData[][];
   chosenWord?: number;
+  chosenLetter?: number;
 }
 const foundWordsSlice = createSlice<
   FoundWordsState,
@@ -25,22 +27,66 @@ const foundWordsSlice = createSlice<
       state.foundWords.push(action.payload);
       state.foundWords.sort(CompareWords);
     },
-    chooseWord: (state, action: PayloadAction<number>) => {
-      state.chosenWord = action.payload;
+    chooseLetter: (
+      state,
+      action: PayloadAction<{ wordIndex: number; letterIndex: number }>
+    ) => {
+      state.chosenWord = action.payload.wordIndex;
+      state.chosenLetter = action.payload.letterIndex;
     },
-    clearChosenWord: (state) => {
+    clearChosen: (state) => {
       state.chosenWord = undefined;
+      state.chosenLetter = undefined;
     }
   }
 });
 
-export const selectFoundWordsAsStrings = (state: RootState) => {
-  return state.foundWords.foundWords.map((word) => {
-    return TilesToString(word);
-  });
-};
+export const selectFoundWords = (state: RootState) =>
+  state.foundWords.foundWords;
 
-export const { addFoundWord, chooseWord, clearChosenWord } =
+export const selectChosenWord = (state: RootState) =>
+  state.foundWords.chosenWord;
+
+export const selectChosenLetter = (state: RootState) =>
+  state.foundWords.chosenLetter;
+
+export const selectChosenWordTiles = createSelector(
+  [selectFoundWords, selectChosenWord],
+  (foundWords, chosenWord) => {
+    if (chosenWord === undefined) {
+      return undefined;
+    }
+    return foundWords[chosenWord];
+  }
+);
+
+export const selectChosenWordLength = createSelector(
+  [selectChosenWordTiles],
+  (chosenWord) => {
+    return chosenWord?.length;
+  }
+);
+
+export const selectFoundWordsAsStrings = createSelector(
+  [selectFoundWords],
+  (foundWords) => {
+    return foundWords.map((word) => {
+      return TilesToString(word);
+    });
+  }
+);
+
+export const selectChosenLetterString = createSelector(
+  [selectFoundWords, selectChosenWord, selectChosenLetter],
+  (foundWords, chosenWord, chosenLetter) => {
+    if (chosenWord === undefined || chosenLetter === undefined) {
+      return undefined;
+    }
+    return foundWords[chosenWord][chosenLetter].letter;
+  }
+);
+
+export const { addFoundWord, chooseLetter, clearChosen } =
   foundWordsSlice.actions;
 
 export default foundWordsSlice.reducer;

@@ -16,6 +16,9 @@ export const TILE_SHADOW_WIDTH = 0.5;
 export const TILE_FONT_SIZE = (TILE_DIAMETER * 2) / 3;
 export const TILE_UNITS = 'px';
 
+export const PCB_DIAMETER = (TILE_DIAMETER * 2) / 3;
+export const PCB_MARGIN = (TILE_DIAMETER - PCB_DIAMETER) / 2;
+
 export const COMPONENT_MARGIN = 1;
 
 export const ODD_ROW_OFFSET = TILE_DIAMETER / 2 + TILE_MARGIN_HORZ / 2;
@@ -66,6 +69,7 @@ export const COLOR_BLUE_TRANS = COLOR_BLUE_MAIN + '80';
 export const COLOR_RED_MAIN = '#dc3545';
 export const COLOR_YELLOW_MAIN = '#ffc107';
 export const COLOR_GREEN_MAIN = '#28a745';
+export const COLOR_GREEN_FOCUS = '#00a700';
 export const COLOR_PINK_MAIN = '#ec407a';
 export const COLOR_PINK_FOCUS = '#e91e63';
 export const COLOR_PINK_TRANS = COLOR_PINK_MAIN + '80';
@@ -106,6 +110,18 @@ const calcUnitSize = () => {
   document.documentElement.style.setProperty(
     '--tile-shadow-width',
     `${TILE_SHADOW_WIDTH * unitSize}${TILE_UNITS}`
+  );
+
+  /////////////////////////////////////////////////////////////////////////////
+  //                     Placement Control Button Props                      //
+  /////////////////////////////////////////////////////////////////////////////
+  document.documentElement.style.setProperty(
+    '--pcb-diam',
+    `${PCB_DIAMETER * unitSize}${TILE_UNITS}`
+  );
+  document.documentElement.style.setProperty(
+    '--pcb-margin',
+    `${PCB_MARGIN * unitSize}${TILE_UNITS}`
   );
 
   /////////////////////////////////////////////////////////////////////////////
@@ -189,6 +205,14 @@ document.documentElement.style.setProperty(
   '--color-gray-focus',
   `${COLOR_GRAY_FOCUS}`
 );
+document.documentElement.style.setProperty(
+  '--color-green-main',
+  `${COLOR_GREEN_MAIN}`
+);
+document.documentElement.style.setProperty(
+  '--color-green-focus',
+  `${COLOR_GREEN_FOCUS}`
+);
 
 export const selectUnitSize = (state: RootState) => {
   return state.styling.unitSize;
@@ -204,8 +228,8 @@ const selectTileData = (state: RootState, tileData: NWTData) => {
 };
 
 const selectDirection = (
-  state: RootState,
-  tileData: NWTData,
+  _state: RootState,
+  _tileData: NWTData,
   direction: Directions
 ) => {
   return direction;
@@ -292,21 +316,18 @@ export const selectTopOffsetForConnector = createSelector(
   (baseTopOffset, halfTilePixels) => baseTopOffset + halfTilePixels
 );
 
-export const selectIsMobileSized = createSelector(
-  [selectUnitSize],
-  (unitSize) => {
-    // Dependency on selectUnitSize forces update whenever unit size changes.
-    const winW = window.innerWidth;
-    const winH = window.innerHeight;
-    const winRatio = winW / winH;
+export const selectIsMobileSized = createSelector([selectUnitSize], () => {
+  // Dependency on selectUnitSize forces update whenever unit size changes.
+  const winW = window.innerWidth;
+  const winH = window.innerHeight;
+  const winRatio = winW / winH;
 
-    if (winRatio >= DESK_WH_RATIO) {
-      return false;
-    }
-    // TODO: probably want to be more permissive than this for destop view, but idk.
-    return true;
+  if (winRatio >= DESK_WH_RATIO) {
+    return false;
   }
-);
+  // TODO: probably want to be more permissive than this for destop view, but idk.
+  return true;
+});
 
 export const { updateUnitSize } = stylingSlice.actions;
 

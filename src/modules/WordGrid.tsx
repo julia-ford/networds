@@ -12,9 +12,12 @@ import {
   WG_DRAW_HEIGHT,
   WG_DRAW_WIDTH
 } from '../stuff/slices/StylingSlice';
-import { setGameMode } from '../stuff/slices/GameSlice';
+import { selectChosenDirection, setGameMode } from '../stuff/slices/GameSlice';
+import { selectChosenLetterString } from '../stuff/slices/FoundWordsSlice';
 import {
   chooseWordGridSpace,
+  selectPreviewHasErrors,
+  selectWordGridChosenSpace,
   selectWordGridTilesState,
   WGTileData
 } from '../stuff/slices/WordGridSlice';
@@ -24,27 +27,38 @@ import {
 } from '../stuff/slices/StylingSlice';
 import { DirectionPicker } from './bulk/DirectionPicker';
 import { NetwordsTile } from './bulk/NetwordsTile';
+import { TileConnector } from './bulk/TileConnector';
 
 import './WordGrid.css';
-import { TileConnector } from './bulk/TileConnector';
+import { ConfirmPlacementButton } from './PlacementControlButtons';
 
 export const WordGrid = () => {
   const gameMode = useAppSelector((state) => state.game.gameMode);
-
-  const wordGrid = useAppSelector(selectWordGridTilesState);
-
-  const placedWords = useAppSelector((state) => state.wordGrid.words);
-
   const unitSize = useAppSelector(selectUnitSize);
+  const wordGrid = useAppSelector(selectWordGridTilesState);
+  const chosenSpace = useAppSelector(selectWordGridChosenSpace);
+  const placedWords = useAppSelector((state) => state.wordGrid.words);
+  const chosenDirection = useAppSelector(selectChosenDirection);
+  const chosenLetterString = useAppSelector(selectChosenLetterString);
+  const previewHasErrors = useAppSelector(selectPreviewHasErrors);
 
   const dispatch = useAppDispatch();
+
+  const showControlButtons =
+    !previewHasErrors &&
+    chosenLetterString !== undefined &&
+    chosenSpace !== undefined &&
+    chosenDirection !== undefined;
+  const confirmPlacementButton = !showControlButtons ? null : (
+    <ConfirmPlacementButton></ConfirmPlacementButton>
+  );
 
   const tiles = wordGrid.map((row, rowIndex) => {
     return row.map((tile, colIndex) => {
       const tileData = { row: rowIndex, col: colIndex };
 
       let onClick: undefined | (() => void);
-      if (gameMode === GameModes.ChoosingBoardSpace && tile.isValidChoice) {
+      if (chosenLetterString && tile.isValidChoice) {
         onClick = () => {
           dispatch(chooseWordGridSpace({ row: rowIndex, col: colIndex }));
           dispatch(setGameMode(GameModes.ChoosingDirection));
@@ -103,14 +117,11 @@ export const WordGrid = () => {
         height={`${WG_DRAW_HEIGHT * unitSize}`}
         viewBox={`0 0 ${WG_DRAW_WIDTH * unitSize} ${WG_DRAW_HEIGHT * unitSize}`}
         xmlns='http://www.w3.org/2000/svg'
-        style={{
-          width: `${WG_DRAW_WIDTH * unitSize}${TILE_UNITS}`,
-          height: `${WG_DRAW_HEIGHT * unitSize}${TILE_UNITS}`
-        }}
       >
-        {[...connectors /*, ...fadingConnectors*/]}
+        {connectors}
       </svg>
       {directionPickers}
+      {confirmPlacementButton}
     </div>
   );
 };

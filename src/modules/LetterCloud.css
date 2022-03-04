@@ -22,8 +22,15 @@
 .LCTile.Chosen {
   background-color: var(--color-blue-main);
   color: white;
+  animation: toChosen 0.5s;
 }
 .LCTile.Chosen.Clickable:hover {
   background-color: var(--color-blue-focus);
   color: white;
+}
+
+@keyframes toChosen {
+  50% {
+    transform: scale(1.2);
+  }
 }

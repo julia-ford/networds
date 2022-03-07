@@ -55,9 +55,25 @@ export const App = () => {
       dispatch(clearWordInProgress(undefined));
     };
 
+    const onTouchMove = (ev: TouchEvent) => {
+      const touch = ev.touches[0];
+      const element = document.elementFromPoint(touch.clientX, touch.clientY);
+
+      if (element !== null) {
+        const mouseoverEvent = new MouseEvent('mouseover', {
+          view: window,
+          bubbles: true,
+          cancelable: true
+        });
+
+        element.dispatchEvent(mouseoverEvent);
+      }
+    };
+
     window.addEventListener('resize', onWindowResize);
     window.addEventListener('mouseup', onMouseUp);
     window.addEventListener('touchend', onMouseUp);
+    window.addEventListener('touchmove', onTouchMove);
   }, [dispatch]);
 
   let bottomContent = (

@@ -1,3 +1,4 @@
+import { createRef } from 'react';
 import { useAppDispatch, useAppSelector } from '../stuff/hooks';
 import {
   AreTilesAdjacent,
@@ -53,7 +54,6 @@ export const LCDragTile = ({ myData }: LCDTProps) => {
 
   let onMouseOver: (() => void) | undefined;
   if (shouldChooseOnOver) {
-    console.log('adding mouse over for tile');
     onMouseOver = () => {
       dispatch(addTileToWordInProgress(myData));
     };
@@ -79,6 +79,7 @@ export const LCDragTile = ({ myData }: LCDTProps) => {
     <div
       className={`NetwordsTile LCTile ${chosenClass} ${clickableClass} ${gameMode}`}
       onMouseOver={onMouseOver}
+      onDragEnter={onMouseOver}
       onMouseDown={onMouseDown}
       onTouchStart={onMouseDown}
       style={{ left: leftOffset, top: topOffset }}

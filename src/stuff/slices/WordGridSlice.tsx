@@ -254,9 +254,6 @@ export const selectWordGridTilesState = createSelector(
           wgTile.isValidChoice = true;
         } else {
           wgTile.isValidChoice = false;
-          console.log(
-            `(${tileData.row}, ${tileData.col}) "${wgTile.letter}" does not match "${foundWordChosenLetter}"`
-          );
         }
       });
     });

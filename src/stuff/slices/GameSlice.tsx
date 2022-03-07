@@ -28,7 +28,6 @@ const gameSlice = createSlice<GameState, SliceCaseReducers<GameState>>({
       state.isDraggingLCTiles = true;
     },
     stopDragging: (state) => {
-      console.log('stop drag');
       state.isDraggingLCTiles = false;
     },
     setChosenDirection: (state, action: PayloadAction<Directions>) => {

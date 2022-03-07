@@ -177,7 +177,6 @@ const stylingSlice = createSlice<StylingState, SliceCaseReducers<StylingState>>(
     },
     reducers: {
       updateUnitSize: (state) => {
-        console.log('updating unit size');
         state.unitSize = calcUnitSize();
       }
     }

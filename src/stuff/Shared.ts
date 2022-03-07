@@ -142,19 +142,14 @@ export const getNextCoords = (tileData: NWTData, direction: Directions) => {
  * @returns true if it's a valid word; false otherwise
  */
 export const IsValidWord = (word: string, wordsFound: string[]) => {
-  console.log(`checking if '${word}' is a valid word`);
-
   if (wordsFound.includes(word)) {
-    console.log(`no, '${word}' is not valid; already submitted`);
     return false;
   }
 
   if (!dictContains(word)) {
-    console.log(`no, '${word}' is not valid; not in dictionary`);
     return false;
   }
 
-  console.log(`confirmed, '${word}' is a valid word`);
   return true;
 };
 

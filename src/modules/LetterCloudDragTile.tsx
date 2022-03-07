@@ -80,6 +80,7 @@ export const LCDragTile = ({ myData }: LCDTProps) => {
       className={`NetwordsTile LCTile ${chosenClass} ${clickableClass} ${gameMode}`}
       onMouseOver={onMouseOver}
       onMouseDown={onMouseDown}
+      onTouchStart={onMouseDown}
       style={{ left: leftOffset, top: topOffset }}
     >
       {myData.letter}

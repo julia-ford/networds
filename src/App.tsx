@@ -57,6 +57,7 @@ export const App = () => {
 
     window.addEventListener('resize', onWindowResize);
     window.addEventListener('mouseup', onMouseUp);
+    window.addEventListener('touchend', onMouseUp);
   }, [dispatch]);
 
   let bottomContent = (

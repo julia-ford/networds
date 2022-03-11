@@ -1,5 +1,3 @@
-import React from 'react';
-
 import {
   createSelector,
   createSlice,
@@ -9,6 +7,7 @@ import {
 import { RootState } from '../store';
 import { Directions, NWTData } from '../Shared';
 
+/** The diameter of a NetwordsTile in Networds units. */
 export const TILE_DIAMETER = 5;
 export const TILE_MARGIN_HORZ = 0.4;
 export const TILE_MARGIN_VERT = -0.2;
@@ -16,46 +15,54 @@ export const TILE_SHADOW_WIDTH = 0.5;
 export const TILE_FONT_SIZE = (TILE_DIAMETER * 2) / 3;
 export const TILE_UNITS = 'px';
 
+/** PlacementControlButton diameter in Networds units. */
 export const PCB_DIAMETER = (TILE_DIAMETER * 2) / 3;
+/** PlacementControlButton margin width in Networds units. */
 export const PCB_MARGIN = (TILE_DIAMETER - PCB_DIAMETER) / 2;
 
+/** Width of the margin between components in Networds units. */
 export const COMPONENT_MARGIN = 1;
 
+/** The extra left offset that odd-numbered rows get, in Networds units. */
 export const ODD_ROW_OFFSET = TILE_DIAMETER / 2 + TILE_MARGIN_HORZ / 2;
 
-export const WG_TILE_WIDTH = 9;
-export const WG_TILE_HEIGHT = 9;
-export const WG_DRAW_WIDTH =
+export const WG_TILES_WIDE = 9;
+export const WG_TILES_HIGH = 9;
+export const WG_UNITS_WIDE =
   ODD_ROW_OFFSET +
-  WG_TILE_WIDTH * TILE_DIAMETER +
-  (WG_TILE_WIDTH - 1) * TILE_MARGIN_HORZ;
-export const WG_DRAW_HEIGHT =
-  WG_TILE_HEIGHT * TILE_DIAMETER + (WG_TILE_HEIGHT - 1) * TILE_MARGIN_VERT;
+  WG_TILES_WIDE * TILE_DIAMETER +
+  (WG_TILES_WIDE - 1) * TILE_MARGIN_HORZ;
+export const WG_UNITS_HIGH =
+  WG_TILES_HIGH * TILE_DIAMETER + (WG_TILES_HIGH - 1) * TILE_MARGIN_VERT;
 
-export const LC_TILE_DIAM = 5;
-export const LC_DRAW_WIDTH =
-  LC_TILE_DIAM * TILE_DIAMETER + (LC_TILE_DIAM - 1) * TILE_MARGIN_HORZ;
-export const LC_DRAW_HEIGHT =
-  LC_TILE_DIAM * TILE_DIAMETER + (LC_TILE_DIAM - 1) * TILE_MARGIN_VERT;
+export const LCTILE_UNITS_DIAM = 7;
+export const LCTILE_UNITS_FONT = (LCTILE_UNITS_DIAM * 2) / 3;
 
-export const FWL_TILE_WIDTH = Math.max(WG_TILE_WIDTH, WG_TILE_HEIGHT);
-export const FWL_TILE_HEIGHT = WG_TILE_HEIGHT;
-export const FWL_DRAW_WIDTH =
-  FWL_TILE_WIDTH * TILE_DIAMETER + (FWL_TILE_WIDTH - 1) * TILE_MARGIN_HORZ;
-export const FWL_DRAW_HEIGHT =
-  FWL_TILE_HEIGHT * TILE_DIAMETER + (FWL_TILE_HEIGHT - 1) * TILE_MARGIN_VERT;
+export const LC_TILES_DIAM = 5;
+export const LC_UNITS_WIDE =
+  LC_TILES_DIAM * LCTILE_UNITS_DIAM + (LC_TILES_DIAM - 1) * TILE_MARGIN_HORZ;
+export const LC_UNITS_HIGH =
+  LC_TILES_DIAM * LCTILE_UNITS_DIAM + (LC_TILES_DIAM - 1) * TILE_MARGIN_VERT;
+export const LC_ODD_ROW_OFFSET = LCTILE_UNITS_DIAM / 2 + TILE_MARGIN_HORZ / 2;
+
+export const FWL_TILES_WIDE = Math.max(WG_TILES_WIDE, WG_TILES_HIGH);
+export const FWL_TILES_HIGH = WG_TILES_HIGH;
+export const FWL_UNITS_WIDE =
+  FWL_TILES_WIDE * TILE_DIAMETER + (FWL_TILES_WIDE - 1) * TILE_MARGIN_HORZ;
+export const FWL_UNITS_HIGH =
+  FWL_TILES_HIGH * TILE_DIAMETER + (FWL_TILES_HIGH - 1) * TILE_MARGIN_VERT;
 
 export const SCREEN_UNITS_TALL_SANS_HEADER =
   COMPONENT_MARGIN +
   TILE_DIAMETER +
   TILE_MARGIN_VERT +
-  WG_DRAW_HEIGHT +
+  WG_UNITS_HIGH +
   COMPONENT_MARGIN +
-  WG_DRAW_HEIGHT +
+  WG_UNITS_HIGH +
   COMPONENT_MARGIN;
 export const SCREEN_UNITS_TALL = SCREEN_UNITS_TALL_SANS_HEADER + TILE_DIAMETER;
-export const SCREEN_UNITS_WIDE_MOBILE = WG_DRAW_WIDTH + 2 * COMPONENT_MARGIN;
-export const SCREEN_UNITS_WIDE_DESK = WG_DRAW_WIDTH * 2 + 3 * COMPONENT_MARGIN;
+export const SCREEN_UNITS_WIDE_MOBILE = WG_UNITS_WIDE + 2 * COMPONENT_MARGIN;
+export const SCREEN_UNITS_WIDE_DESK = WG_UNITS_WIDE * 2 + 3 * COMPONENT_MARGIN;
 export const MOBILE_WH_RATIO = SCREEN_UNITS_WIDE_MOBILE / SCREEN_UNITS_TALL;
 export const DESK_WH_RATIO = SCREEN_UNITS_WIDE_DESK / SCREEN_UNITS_TALL;
 
@@ -127,23 +134,31 @@ const calcUnitSize = () => {
   /////////////////////////////////////////////////////////////////////////////
   document.documentElement.style.setProperty(
     '--wg-draw-width',
-    `${WG_DRAW_WIDTH * unitSize}${TILE_UNITS}`
+    `${WG_UNITS_WIDE * unitSize}${TILE_UNITS}`
   );
   document.documentElement.style.setProperty(
     '--wg-draw-height',
-    `${WG_DRAW_HEIGHT * unitSize}${TILE_UNITS}`
+    `${WG_UNITS_HIGH * unitSize}${TILE_UNITS}`
   );
 
   /////////////////////////////////////////////////////////////////////////////
   //                            Letter Cloud                                 //
   /////////////////////////////////////////////////////////////////////////////
   document.documentElement.style.setProperty(
+    '--lc-tile-diam',
+    `${LCTILE_UNITS_DIAM * unitSize}${TILE_UNITS}`
+  );
+  document.documentElement.style.setProperty(
+    '--lc-font-size',
+    `${LCTILE_UNITS_FONT * unitSize}${TILE_UNITS}`
+  );
+  document.documentElement.style.setProperty(
     '--lc-draw-width',
-    `${LC_DRAW_WIDTH * unitSize}${TILE_UNITS}`
+    `${LC_UNITS_WIDE * unitSize}${TILE_UNITS}`
   );
   document.documentElement.style.setProperty(
     '--lc-draw-height',
-    `${LC_DRAW_HEIGHT * unitSize}${TILE_UNITS}`
+    `${LC_UNITS_HIGH * unitSize}${TILE_UNITS}`
   );
 
   /////////////////////////////////////////////////////////////////////////////
@@ -222,6 +237,11 @@ export const selectUnitSize = (state: RootState) => {
 export const selectHalfTilePixels = createSelector(
   [selectUnitSize],
   (unitSize) => (TILE_DIAMETER * unitSize) / 2
+);
+
+export const selectHalfLCTilePixels = createSelector(
+  [selectUnitSize],
+  (unitSize) => (LCTILE_UNITS_DIAM * unitSize) / 2
 );
 
 const selectTileData = (state: RootState, tileData: NWTData) => {
@@ -307,13 +327,40 @@ export const selectTopOffsetForDirPicker = createSelector(
   }
 );
 
-export const selectLeftOffsetForConnector = createSelector(
+export const selectLeftOffsetForWGConnector = createSelector(
   [selectLeftOffset, selectHalfTilePixels],
   (baseLeftOffset, halfTilePixels) => baseLeftOffset + halfTilePixels
 );
 
-export const selectTopOffsetForConnector = createSelector(
+export const selectTopOffsetForWGConnector = createSelector(
   [selectTopOffset, selectHalfTilePixels],
+  (baseTopOffset, halfTilePixels) => baseTopOffset + halfTilePixels
+);
+
+export const selectLeftOffsetForLCTile = createSelector(
+  [selectUnitSize, selectTileData],
+  (unitSize, tileData) => {
+    return (
+      tileData.col * (LCTILE_UNITS_DIAM + TILE_MARGIN_HORZ) * unitSize +
+      (tileData.row % 2 === 1 ? LC_ODD_ROW_OFFSET * unitSize : 0)
+    );
+  }
+);
+
+export const selectTopOffsetForLCTile = createSelector(
+  [selectUnitSize, selectTileData],
+  (unitSize, tileData) => {
+    return tileData.row * (LCTILE_UNITS_DIAM + TILE_MARGIN_VERT) * unitSize;
+  }
+);
+
+export const selectLeftOffsetForLCConnector = createSelector(
+  [selectLeftOffsetForLCTile, selectHalfLCTilePixels],
+  (baseLeftOffset, halfTilePixels) => baseLeftOffset + halfTilePixels
+);
+
+export const selectTopOffsetForLCConnector = createSelector(
+  [selectTopOffsetForLCTile, selectHalfLCTilePixels],
   (baseTopOffset, halfTilePixels) => baseTopOffset + halfTilePixels
 );
 

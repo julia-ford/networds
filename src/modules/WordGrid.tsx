@@ -9,8 +9,8 @@ import {
   selectUnitSize,
   TILE_SHADOW_WIDTH,
   TILE_UNITS,
-  WG_DRAW_HEIGHT,
-  WG_DRAW_WIDTH
+  WG_UNITS_HIGH,
+  WG_UNITS_WIDE
 } from '../stuff/slices/StylingSlice';
 import { selectChosenDirection, setGameMode } from '../stuff/slices/GameSlice';
 import { selectChosenLetterString } from '../stuff/slices/FoundWordsSlice';
@@ -27,7 +27,7 @@ import {
 } from '../stuff/slices/StylingSlice';
 import { DirectionPicker } from './bulk/DirectionPicker';
 import { NetwordsTile } from './bulk/NetwordsTile';
-import { TileConnector } from './bulk/TileConnector';
+import { ConnectorMode, TileConnector } from './bulk/TileConnector';
 
 import './WordGrid.css';
 import { ConfirmPlacementButton } from './PlacementControlButtons';
@@ -92,6 +92,7 @@ export const WordGrid = () => {
           key={`(${prev.row}, ${prev.col}) to (${tileData.row}, ${tileData.col})`}
           prev={prev}
           next={tileData}
+          mode={ConnectorMode.WG}
         ></TileConnector>
       );
     });
@@ -113,9 +114,9 @@ export const WordGrid = () => {
     <div className={`WordGrid ${gameMode}`}>
       {tiles}
       <svg
-        width={`${WG_DRAW_WIDTH * unitSize}`}
-        height={`${WG_DRAW_HEIGHT * unitSize}`}
-        viewBox={`0 0 ${WG_DRAW_WIDTH * unitSize} ${WG_DRAW_HEIGHT * unitSize}`}
+        width={`${WG_UNITS_WIDE * unitSize}`}
+        height={`${WG_UNITS_HIGH * unitSize}`}
+        viewBox={`0 0 ${WG_UNITS_WIDE * unitSize} ${WG_UNITS_HIGH * unitSize}`}
         xmlns='http://www.w3.org/2000/svg'
       >
         {connectors}

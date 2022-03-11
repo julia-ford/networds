@@ -11,7 +11,10 @@
   background-color: #ffffff14;
 }
 
-.LCTile {
+.NetwordsTile.LCTile {
+  width: var(--lc-tile-diam);
+  height: var(--lc-tile-diam);
+  font-size: var(--lc-font-size);
   background-color: var(--color-gray-main);
   color: var(--color-blue-main);
 }

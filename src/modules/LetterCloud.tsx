@@ -3,12 +3,12 @@ import React from 'react';
 import { useAppSelector } from '../stuff/hooks';
 import { NWTData } from '../stuff/Shared';
 import {
-  LC_DRAW_WIDTH,
-  LC_DRAW_HEIGHT,
+  LC_UNITS_WIDE,
+  LC_UNITS_HIGH,
   TILE_UNITS,
   selectUnitSize
 } from '../stuff/slices/StylingSlice';
-import { TileConnector } from './bulk/TileConnector';
+import { ConnectorMode, TileConnector } from './bulk/TileConnector';
 
 import './LetterCloud.css';
 import { LCDragTile } from './LetterCloudDragTile';
@@ -52,6 +52,7 @@ export const LetterCloud = () => {
         key={`(${prev.row}, ${prev.col}) to (${tileData.row}, ${tileData.col})`}
         prev={prev}
         next={tileData}
+        mode={ConnectorMode.LC}
       ></TileConnector>
     );
   });
@@ -60,13 +61,13 @@ export const LetterCloud = () => {
     <div className='LetterCloud'>
       {tiles}
       <svg
-        width={`${LC_DRAW_WIDTH * unitSize}`}
-        height={`${LC_DRAW_HEIGHT * unitSize}`}
-        viewBox={`0 0 ${LC_DRAW_WIDTH * unitSize} ${LC_DRAW_HEIGHT * unitSize}`}
+        width={`${LC_UNITS_WIDE * unitSize}`}
+        height={`${LC_UNITS_HIGH * unitSize}`}
+        viewBox={`0 0 ${LC_UNITS_WIDE * unitSize} ${LC_UNITS_HIGH * unitSize}`}
         xmlns='http://www.w3.org/2000/svg'
         style={{
-          width: `${LC_DRAW_WIDTH * unitSize}${TILE_UNITS}`,
-          height: `${LC_DRAW_HEIGHT * unitSize}${TILE_UNITS}`
+          width: `${LC_UNITS_WIDE * unitSize}${TILE_UNITS}`,
+          height: `${LC_UNITS_HIGH * unitSize}${TILE_UNITS}`
         }}
       >
         {connectors}

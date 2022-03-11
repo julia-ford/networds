@@ -1,4 +1,3 @@
-import { createRef } from 'react';
 import { useAppDispatch, useAppSelector } from '../stuff/hooks';
 import {
   AreTilesAdjacent,
@@ -14,8 +13,8 @@ import {
   startDragging
 } from '../stuff/slices/GameSlice';
 import {
-  selectLeftOffset,
-  selectTopOffset
+  selectLeftOffsetForLCTile,
+  selectTopOffsetForLCTile
 } from '../stuff/slices/StylingSlice';
 import { clearChosenSpace } from '../stuff/slices/WordGridSlice';
 import {
@@ -30,8 +29,12 @@ interface LCDTProps {
   myData: NWTData;
 }
 export const LCDragTile = ({ myData }: LCDTProps) => {
-  const leftOffset = useAppSelector((state) => selectLeftOffset(state, myData));
-  const topOffset = useAppSelector((state) => selectTopOffset(state, myData));
+  const leftOffset = useAppSelector((state) =>
+    selectLeftOffsetForLCTile(state, myData)
+  );
+  const topOffset = useAppSelector((state) =>
+    selectTopOffsetForLCTile(state, myData)
+  );
   const gameMode = useAppSelector(selectGameMode);
   const isChosen = useAppSelector((state) =>
     selectDoesWipContain(state, myData)

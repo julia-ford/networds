@@ -6,7 +6,13 @@ import {
   createSelector
 } from '@reduxjs/toolkit';
 
-import { Directions, GameModes, GetOppositeDirection } from '../Shared';
+import {
+  Directions,
+  GameModes,
+  GetNextDirection,
+  GetOppositeDirection,
+  GetPrevDirection
+} from '../Shared';
 import { RootState } from '../store';
 
 interface GameState {
@@ -32,6 +38,16 @@ const gameSlice = createSlice<GameState, SliceCaseReducers<GameState>>({
     },
     setChosenDirection: (state, action: PayloadAction<Directions>) => {
       state.chosenDirection = action.payload;
+    },
+    chooseNextDirection: (state) => {
+      if (state.chosenDirection) {
+        state.chosenDirection = GetNextDirection(state.chosenDirection);
+      }
+    },
+    choosePrevDirection: (state) => {
+      if (state.chosenDirection) {
+        state.chosenDirection = GetPrevDirection(state.chosenDirection);
+      }
     },
     clearChosenDirection: (state) => {
       state.chosenDirection = undefined;
@@ -59,6 +75,8 @@ export const {
   startDragging,
   stopDragging,
   setChosenDirection,
+  chooseNextDirection,
+  choosePrevDirection,
   clearChosenDirection
 } = gameSlice.actions;
 

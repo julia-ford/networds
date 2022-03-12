@@ -39,3 +39,8 @@
   margin-left: var(--component-margin);
   margin-right: var(--component-margin);
 }
+
+.Placed {
+  background-color: darkgray;
+  color: gray;
+}

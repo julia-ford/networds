@@ -1,17 +1,29 @@
-.PlacementControlButton {
+.PCBRow {
   position: absolute;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  padding: var(--component-margin);
+  border-radius: calc(var(--pcbr-height) / 2);
+
+  background-color: white;
+
+  box-shadow: var(--material-shadow);
+}
+
+.PlacementControlButton {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
 
   width: var(--pcb-diam);
   height: var(--pcb-diam);
-  margin: var(--pcb-margin);
+  margin-right: var(--tile-margin-horz);
   border-radius: calc(var(--pcb-diam) / 2);
-
-  cursor: pointer;
-
-  box-shadow: var(--material-shadow);
+  font-size: var(--pcb-font-size);
 
   transition: color 0.5s, background-color 0.5s, box-shadow 0.5s, width 0.5s,
     height 0.5s, font-size 0.5s, left 0.5s, top 0.5s;
@@ -21,7 +33,24 @@
   background-color: var(--color-green-main);
   color: white;
 }
-
-.ConfirmPlacementButton:hover {
+.ConfirmPlacementButton.Clickable:hover {
   background-color: var(--color-green-focus);
+}
+
+.PlacementControlButton.CancelPlacementButton {
+  margin-right: 0;
+
+  background-color: var(--color-red-main);
+  color: white;
+}
+.CancelPlacementButton.Clickable:hover {
+  background-color: var(--color-red-focus);
+}
+
+.RotateButton {
+  background-color: var(--color-yellow-main);
+  color: black;
+}
+.RotateButton.Clickable:hover {
+  background-color: var(--color-yellow-focus);
 }

@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   createSlice,
   SliceCaseReducers,
@@ -6,7 +5,12 @@ import {
   createSelector
 } from '@reduxjs/toolkit';
 
-import { CompareWords, NWTData, TilesToString } from '../Shared';
+import {
+  ComparePlacedWords,
+  NWTData,
+  PlacedWord,
+  TilesToString
+} from '../Shared';
 import { RootState } from '../store';
 
 interface FoundWordsState {
@@ -25,7 +29,6 @@ const foundWordsSlice = createSlice<
   reducers: {
     addFoundWord: (state, action: PayloadAction<NWTData[]>) => {
       state.foundWords.push(action.payload);
-      state.foundWords.sort(CompareWords);
     },
     chooseLetter: (
       state,
@@ -49,6 +52,21 @@ export const selectChosenWord = (state: RootState) =>
 
 export const selectChosenLetter = (state: RootState) =>
   state.foundWords.chosenLetter;
+
+export const selectSortedFoundWords = createSelector(
+  [selectFoundWords],
+  (foundWords) => {
+    return foundWords
+      .map((tiles, foundWordIndex) => {
+        const wordWithIndex: PlacedWord = {
+          tiles,
+          foundWordIndex
+        };
+        return wordWithIndex;
+      })
+      .sort(ComparePlacedWords);
+  }
+);
 
 export const selectChosenWordTiles = createSelector(
   [selectFoundWords, selectChosenWord],

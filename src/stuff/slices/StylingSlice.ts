@@ -15,17 +15,13 @@ export const TILE_SHADOW_WIDTH = 0.5;
 export const TILE_FONT_SIZE = (TILE_DIAMETER * 2) / 3;
 export const TILE_UNITS = 'px';
 
-/** PlacementControlButton diameter in Networds units. */
-export const PCB_DIAMETER = (TILE_DIAMETER * 2) / 3;
-/** PlacementControlButton margin width in Networds units. */
-export const PCB_MARGIN = (TILE_DIAMETER - PCB_DIAMETER) / 2;
-
 /** Width of the margin between components in Networds units. */
 export const COMPONENT_MARGIN = 1;
 
 /** The extra left offset that odd-numbered rows get, in Networds units. */
 export const ODD_ROW_OFFSET = TILE_DIAMETER / 2 + TILE_MARGIN_HORZ / 2;
 
+// Word Grid
 export const WG_TILES_WIDE = 9;
 export const WG_TILES_HIGH = 9;
 export const WG_UNITS_WIDE =
@@ -35,6 +31,7 @@ export const WG_UNITS_WIDE =
 export const WG_UNITS_HIGH =
   WG_TILES_HIGH * TILE_DIAMETER + (WG_TILES_HIGH - 1) * TILE_MARGIN_VERT;
 
+// Letter Cloud
 export const LCTILE_UNITS_DIAM = 7;
 export const LCTILE_UNITS_FONT = (LCTILE_UNITS_DIAM * 2) / 3;
 
@@ -45,12 +42,24 @@ export const LC_UNITS_HIGH =
   LC_TILES_DIAM * LCTILE_UNITS_DIAM + (LC_TILES_DIAM - 1) * TILE_MARGIN_VERT;
 export const LC_ODD_ROW_OFFSET = LCTILE_UNITS_DIAM / 2 + TILE_MARGIN_HORZ / 2;
 
+// Found Words List
 export const FWL_TILES_WIDE = Math.max(WG_TILES_WIDE, WG_TILES_HIGH);
 export const FWL_TILES_HIGH = WG_TILES_HIGH;
 export const FWL_UNITS_WIDE =
   FWL_TILES_WIDE * TILE_DIAMETER + (FWL_TILES_WIDE - 1) * TILE_MARGIN_HORZ;
 export const FWL_UNITS_HIGH =
   FWL_TILES_HIGH * TILE_DIAMETER + (FWL_TILES_HIGH - 1) * TILE_MARGIN_VERT;
+
+// Placement Control Buttons
+/** PCBRow width in Networds units. */
+export const PCBR_UNITS_WIDE = TILE_DIAMETER * 3 + TILE_MARGIN_HORZ * 2;
+/** PlacementControlButton diameter in Networds units. */
+export const PCB_UNITS_DIAM =
+  (PCBR_UNITS_WIDE - TILE_MARGIN_HORZ * 3 - COMPONENT_MARGIN * 2) / 4;
+/** PlacementControlButton font size in Networds units. */
+export const PCB_FONT_SIZE = (PCB_UNITS_DIAM * 2) / 3;
+/** PCBRow height in Networds units. */
+export const PCBR_UNITS_HIGH = PCB_UNITS_DIAM + COMPONENT_MARGIN * 2;
 
 export const SCREEN_UNITS_TALL_SANS_HEADER =
   COMPONENT_MARGIN +
@@ -73,9 +82,11 @@ export const COLOR_BLUE_MAIN = '#007bff';
 export const COLOR_BLUE_FOCUS = '#0069d9';
 export const COLOR_BLUE_TRANS = COLOR_BLUE_MAIN + '80';
 export const COLOR_RED_MAIN = '#dc3545';
+export const COLOR_RED_FOCUS = '#c82333';
 export const COLOR_YELLOW_MAIN = '#ffc107';
+export const COLOR_YELLOW_FOCUS = '#e0a800';
 export const COLOR_GREEN_MAIN = '#28a745';
-export const COLOR_GREEN_FOCUS = '#00a700';
+export const COLOR_GREEN_FOCUS = '#218838';
 export const COLOR_PINK_MAIN = '#ec407a';
 export const COLOR_PINK_FOCUS = '#e91e63';
 export const COLOR_PINK_TRANS = COLOR_PINK_MAIN + '80';
@@ -123,11 +134,19 @@ const calcUnitSize = () => {
   /////////////////////////////////////////////////////////////////////////////
   document.documentElement.style.setProperty(
     '--pcb-diam',
-    `${PCB_DIAMETER * unitSize}${TILE_UNITS}`
+    `${PCB_UNITS_DIAM * unitSize}${TILE_UNITS}`
   );
   document.documentElement.style.setProperty(
-    '--pcb-margin',
-    `${PCB_MARGIN * unitSize}${TILE_UNITS}`
+    '--pcb-font-size',
+    `${PCB_FONT_SIZE * unitSize}${TILE_UNITS}`
+  );
+  document.documentElement.style.setProperty(
+    '--pcbr-width',
+    `${PCBR_UNITS_WIDE * unitSize}${TILE_UNITS}`
+  );
+  document.documentElement.style.setProperty(
+    '--pcbr-height',
+    `${PCBR_UNITS_HIGH * unitSize}${TILE_UNITS}`
   );
 
   /////////////////////////////////////////////////////////////////////////////
@@ -203,6 +222,14 @@ const stylingSlice = createSlice<StylingState, SliceCaseReducers<StylingState>>(
 //                                 Colors                                    //
 ///////////////////////////////////////////////////////////////////////////////
 document.documentElement.style.setProperty(
+  '--color-gray-main',
+  `${COLOR_GRAY_MAIN}`
+);
+document.documentElement.style.setProperty(
+  '--color-gray-focus',
+  `${COLOR_GRAY_FOCUS}`
+);
+document.documentElement.style.setProperty(
   '--color-blue-main',
   `${COLOR_BLUE_MAIN}`
 );
@@ -215,12 +242,20 @@ document.documentElement.style.setProperty(
   `${COLOR_BLUE_TRANS}`
 );
 document.documentElement.style.setProperty(
-  '--color-gray-main',
-  `${COLOR_GRAY_MAIN}`
+  '--color-red-main',
+  `${COLOR_RED_MAIN}`
 );
 document.documentElement.style.setProperty(
-  '--color-gray-focus',
-  `${COLOR_GRAY_FOCUS}`
+  '--color-red-focus',
+  `${COLOR_RED_FOCUS}`
+);
+document.documentElement.style.setProperty(
+  '--color-yellow-main',
+  `${COLOR_YELLOW_MAIN}`
+);
+document.documentElement.style.setProperty(
+  '--color-yellow-focus',
+  `${COLOR_YELLOW_FOCUS}`
 );
 document.documentElement.style.setProperty(
   '--color-green-main',

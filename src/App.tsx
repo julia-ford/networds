@@ -12,7 +12,11 @@ import {
 import { FoundWordsList } from './modules/FoundWordsList';
 import { selectGameMode, stopDragging } from './stuff/slices/GameSlice';
 import { GameModes, IsValidWord, TilesToString } from './stuff/Shared';
-import { addFoundWord, clearChosen } from './stuff/slices/FoundWordsSlice';
+import {
+  addFoundWord,
+  clearChosen,
+  selectFoundWordsAsStrings
+} from './stuff/slices/FoundWordsSlice';
 import { clearWordInProgress } from './stuff/slices/WordInProgressSlice';
 import { AppDispatch, RootState } from './stuff/store';
 import { NWHeader } from './modules/NWHeader';
@@ -37,10 +41,7 @@ export const App = () => {
       const state = getState();
       const wipTiles = state.wordInProgress.tilesFromLetterCloud;
       const wipString = TilesToString(wipTiles);
-      const foundWordsTiles = state.foundWords.foundWords;
-      const foundWordsStrings = foundWordsTiles.map((word) =>
-        TilesToString(word)
-      );
+      const foundWordsStrings = selectFoundWordsAsStrings(state);
       const isWipValid = IsValidWord(wipString, foundWordsStrings);
 
       if (isWipValid) {
@@ -86,6 +87,7 @@ export const App = () => {
   if (
     isMobileSized &&
     (gameMode === GameModes.ChoosingLocalLetter ||
+      gameMode === GameModes.ChoosingBoardSpace ||
       gameMode === GameModes.ChoosingDirection)
   ) {
     bottomContent = <FoundWordsList></FoundWordsList>;
@@ -96,7 +98,6 @@ export const App = () => {
       <div className='VertLine'></div>
       <div className='NWCol'>
         <FoundWordsList></FoundWordsList>
-        <div>rotation controls and/or placed words list</div>
       </div>
     </>
   );
@@ -105,7 +106,7 @@ export const App = () => {
     <div className='App'>
       <NWHeader></NWHeader>
       <div className='NWRowOfCols'>
-        <div className='NWCol'>
+        <div className='NWCol' style={{ flexGrow: 1 }}>
           <WordGrid></WordGrid>
           {bottomContent}
         </div>

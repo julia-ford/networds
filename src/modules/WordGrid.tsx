@@ -16,7 +16,6 @@ import { selectChosenDirection, setGameMode } from '../stuff/slices/GameSlice';
 import { selectChosenLetterString } from '../stuff/slices/FoundWordsSlice';
 import {
   chooseWordGridSpace,
-  selectPreviewHasErrors,
   selectWordGridChosenSpace,
   selectWordGridTilesState,
   WGTileData
@@ -25,33 +24,32 @@ import {
   selectLeftOffset,
   selectTopOffset
 } from '../stuff/slices/StylingSlice';
-import { DirectionPicker } from './bulk/DirectionPicker';
+import {
+  CancelDirPickingButton,
+  DirectionPicker
+} from './bulk/DirectionPicker';
 import { NetwordsTile } from './bulk/NetwordsTile';
 import { ConnectorMode, TileConnector } from './bulk/TileConnector';
 
 import './WordGrid.css';
-import { ConfirmPlacementButton } from './PlacementControlButtons';
+import { PCBRow } from './PlacementControlButtons';
 
 export const WordGrid = () => {
   const gameMode = useAppSelector((state) => state.game.gameMode);
   const unitSize = useAppSelector(selectUnitSize);
   const wordGrid = useAppSelector(selectWordGridTilesState);
   const chosenSpace = useAppSelector(selectWordGridChosenSpace);
-  const placedWords = useAppSelector((state) => state.wordGrid.words);
+  const placedWords = useAppSelector((state) => state.wordGrid.placedWords);
   const chosenDirection = useAppSelector(selectChosenDirection);
   const chosenLetterString = useAppSelector(selectChosenLetterString);
-  const previewHasErrors = useAppSelector(selectPreviewHasErrors);
 
   const dispatch = useAppDispatch();
 
   const showControlButtons =
-    !previewHasErrors &&
     chosenLetterString !== undefined &&
     chosenSpace !== undefined &&
     chosenDirection !== undefined;
-  const confirmPlacementButton = !showControlButtons ? null : (
-    <ConfirmPlacementButton></ConfirmPlacementButton>
-  );
+  const controlButtons = !showControlButtons ? null : <PCBRow></PCBRow>;
 
   const tiles = wordGrid.map((row, rowIndex) => {
     return row.map((tile, colIndex) => {
@@ -82,11 +80,11 @@ export const WordGrid = () => {
 
   const connectors: ReactNode[] = [];
   placedWords.forEach((word) => {
-    word.forEach((tileData, index) => {
+    word.tiles.forEach((tileData, index) => {
       if (index === 0) {
         return null;
       }
-      const prev = word[index - 1];
+      const prev = word.tiles[index - 1];
       connectors.push(
         <TileConnector
           key={`(${prev.row}, ${prev.col}) to (${tileData.row}, ${tileData.col})`}
@@ -108,6 +106,10 @@ export const WordGrid = () => {
         ></DirectionPicker>
       );
     });
+
+    directionPickers.push(
+      <CancelDirPickingButton key='Dir Picking Cancel Button'></CancelDirPickingButton>
+    );
   }
 
   return (
@@ -122,7 +124,7 @@ export const WordGrid = () => {
         {connectors}
       </svg>
       {directionPickers}
-      {confirmPlacementButton}
+      {controlButtons}
     </div>
   );
 };

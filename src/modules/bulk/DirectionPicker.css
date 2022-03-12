@@ -1,8 +1,33 @@
-.DirectionPicker {
+.DirectionPicker,
+.CancelDirPickingButton {
   position: absolute;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: var(--tile-diam);
-  height: var(--tile-diam);
+
+  width: calc(var(--tile-diam) * 2 / 3);
+  height: calc(var(--tile-diam) * 2 / 3);
+  font-size: calc(var(--tile-diam) * 4 / 9);
+  margin: calc(var(--tile-diam) * 1 / 6);
+  border-radius: 100vh;
+
+  box-shadow: var(--material-shadow);
+
+  transition: background-color 0.5s;
+}
+
+.DirectionPicker {
+  background-color: var(--color-yellow-main);
+  color: black;
+}
+.DirectionPicker:hover {
+  background-color: var(--color-yellow-focus);
+}
+
+.CancelDirPickingButton {
+  background-color: var(--color-red-main);
+  color: white;
+}
+.CancelDirPickingButton:hover {
+  background-color: var(--color-red-focus);
 }

@@ -49,6 +49,11 @@ export interface NWTData {
   candy?: Candy;
 }
 
+export interface PlacedWord {
+  tiles: NWTData[];
+  foundWordIndex: number;
+}
+
 export const GetOppositeDirection = (dir: Directions) => {
   switch (dir) {
     case Directions.Northeast:
@@ -63,6 +68,40 @@ export const GetOppositeDirection = (dir: Directions) => {
       return Directions.East;
     case Directions.Northwest:
       return Directions.Southeast;
+  }
+};
+
+export const GetNextDirection = (dir: Directions) => {
+  switch (dir) {
+    case Directions.Northeast:
+      return Directions.East;
+    case Directions.East:
+      return Directions.Southeast;
+    case Directions.Southeast:
+      return Directions.Southwest;
+    case Directions.Southwest:
+      return Directions.West;
+    case Directions.West:
+      return Directions.Northwest;
+    case Directions.Northwest:
+      return Directions.Northeast;
+  }
+};
+
+export const GetPrevDirection = (dir: Directions) => {
+  switch (dir) {
+    case Directions.Northeast:
+      return Directions.Northwest;
+    case Directions.East:
+      return Directions.Northeast;
+    case Directions.Southeast:
+      return Directions.East;
+    case Directions.Southwest:
+      return Directions.Southeast;
+    case Directions.West:
+      return Directions.Southwest;
+    case Directions.Northwest:
+      return Directions.West;
   }
 };
 
@@ -165,4 +204,8 @@ export const CompareWords = (wordA: NWTData[], wordB: NWTData[]) => {
   if (wordAString < wordBString) return -1;
   if (wordAString > wordBString) return 1;
   return 0;
+};
+
+export const ComparePlacedWords = (wordA: PlacedWord, wordB: PlacedWord) => {
+  return CompareWords(wordA.tiles, wordB.tiles);
 };

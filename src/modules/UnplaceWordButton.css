@@ -1,0 +1,22 @@
+.UnplaceWordButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+
+  width: calc(var(--tile-diam) * 2 / 3);
+  height: calc(var(--tile-diam) * 2 / 3);
+  margin: calc(var(--tile-diam) * 1 / 6);
+  font-size: calc(var(--tile-diam) * 4 / 9);
+  border-radius: 100vh;
+
+  background-color: var(--color-red-main);
+  color: white;
+
+  box-shadow: var(--material-shadow);
+
+  transition: background-color 0.5s;
+}
+.UnplaceWordButton:hover {
+  background-color: var(--color-red-focus);
+}

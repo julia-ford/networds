@@ -9,8 +9,6 @@
   max-height: var(--wg-draw-height);
 
   overflow-y: scroll;
-
-  transition: height 0.5s, width 0.5s;
 }
 
 .FoundWordsRow {
@@ -28,7 +26,10 @@
   margin-right: var(--component-margin);
   margin-bottom: var(--component-margin);
 
-  transition: height 0.5s, width 0.5s;
+  overflow: hidden;
+}
+.FoundWordsRow.NonMobile {
+  animation: growIn 0.5s;
 }
 
 .FoundWordsSpacer {
@@ -43,4 +44,24 @@
 .Placed {
   background-color: darkgray;
   color: gray;
+}
+
+.FoundWordsTile.NonMobile {
+  animation: delayAppearance 0.75s;
+}
+
+@keyframes growIn {
+  0% {
+    height: 0;
+    min-height: 0;
+  }
+}
+
+@keyframes delayAppearance {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
 }

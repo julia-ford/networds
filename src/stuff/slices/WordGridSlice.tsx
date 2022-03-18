@@ -27,7 +27,7 @@ import {
   selectChosenWordLength,
   selectChosenWordTiles
 } from './FoundWordsSlice';
-import { selectWordInProgressLength } from './WordInProgressSlice';
+import { selectWipLength } from './WordInProgressSlice';
 
 interface WordGridState {
   placedWords: PlacedWord[];
@@ -132,32 +132,6 @@ export const selectPreviewFirstTileCoords = createSelector(
   }
 );
 
-export const selectPreviewLastTileCoords = createSelector(
-  [
-    selectWordGridChosenSpace,
-    selectChosenDirection,
-    selectChosenLetter,
-    selectWordInProgressLength
-  ],
-  (startCoords, dir, startIndex, wipLength) => {
-    // If the player hasn't chosen a space on the word grid, a tile in the
-    // word in progress, and a direction to point the word yet, we don't need
-    // a preview yet.
-    if (!startCoords || !dir || startIndex === undefined) {
-      return undefined;
-    }
-
-    // Find coords of the first tile in the preview by facing the opposite
-    // direction and backing up until we reach the start of the word.
-    let result = { ...startCoords };
-    for (let i = startIndex; i < wipLength; i++) {
-      result = getNextCoords(result, dir);
-    }
-
-    return result;
-  }
-);
-
 export const selectPreviewWord = createSelector(
   [
     selectPreviewFirstTileCoords,
@@ -198,38 +172,6 @@ export const selectPreviewWord = createSelector(
     };
 
     return previewPlacedWord;
-  }
-);
-
-export const selectRotateRightButtonCoords = createSelector(
-  [
-    selectWordGridChosenSpace,
-    selectChosenDirection,
-    selectChosenLetter,
-    selectChosenWordLength
-  ],
-  (startCoords, oppDir, chosenLetterIndex, chosenWordLength) => {
-    // If the player hasn't chosen a space on the word grid, a tile in the
-    // word in progress, and a direction to point the word yet, we don't need
-    // a preview yet.
-    if (
-      !startCoords ||
-      !oppDir ||
-      chosenLetterIndex === undefined ||
-      chosenWordLength === undefined
-    ) {
-      return undefined;
-    }
-
-    // Find coords of the last tile in the preview by facing the chosen
-    // direction stepping forward until we reach the end of the word.
-    // Then go one step further, and you've reaced the correct coords.
-    let result = { ...startCoords };
-    for (let i = chosenLetterIndex; i <= chosenWordLength; i++) {
-      result = getNextCoords(result, oppDir);
-    }
-
-    return result;
   }
 );
 
@@ -330,6 +272,27 @@ export const selectPreviewHasErrors = createSelector(
   [selectWordGridTilesState],
   (wgTiles) => {
     return wgTiles.hasErrors ?? false;
+  }
+);
+
+export const selectWgEmojified = createSelector(
+  [selectWordGridTilesState],
+  (wgTilesState) => {
+    return wgTilesState
+      .map((row, rowIndex) => {
+        const isOdd = rowIndex % 2 === 1;
+        let rowResult = isOdd ? ' ' : '';
+        rowResult += row
+          .map((tile) => {
+            if (tile.letter) {
+              return '🔵';
+            }
+            return '◯';
+          })
+          .join('');
+        return rowResult;
+      })
+      .join('\n');
   }
 );
 

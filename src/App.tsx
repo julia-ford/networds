@@ -7,20 +7,25 @@ import { WordGrid } from './modules/WordGrid';
 import { useAppDispatch, useAppSelector } from './stuff/hooks';
 import {
   selectIsMobileSized,
-  updateUnitSize
+  updateUnitSize,
+  updateIsMobileSized
 } from './stuff/slices/StylingSlice';
 import { FoundWordsList } from './modules/FoundWordsList';
 import { selectGameMode, stopDragging } from './stuff/slices/GameSlice';
-import { GameModes, IsValidWord, TilesToString } from './stuff/Shared';
+import { GameModes } from './stuff/Shared';
+import { addFoundWord, clearChosen } from './stuff/slices/FoundWordsSlice';
 import {
-  addFoundWord,
-  clearChosen,
-  selectFoundWordsAsStrings
-} from './stuff/slices/FoundWordsSlice';
-import { clearWordInProgress } from './stuff/slices/WordInProgressSlice';
+  clearWordInProgress,
+  selectWipTiles,
+  selectIsWipValid,
+  acceptWord,
+  rejectWord,
+  clearAnimations
+} from './stuff/slices/WordInProgressSlice';
 import { AppDispatch, RootState } from './stuff/store';
 import { NWHeader } from './modules/NWHeader';
 import { WordInProgress } from './modules/WordInProgress';
+import { FlyingAcceptedTiles } from './modules/FlyingAcceptedTiles';
 
 export const App = () => {
   const gameMode = useAppSelector(selectGameMode);
@@ -31,22 +36,24 @@ export const App = () => {
   useEffect(() => {
     const onWindowResize = () => {
       dispatch(updateUnitSize(undefined));
+      dispatch(updateIsMobileSized(undefined));
+      dispatch(clearAnimations(undefined));
     };
 
     const tryAddingWipToFoundWords = (
       dispatch: AppDispatch,
       getState: () => RootState
     ) => {
-      // logic here that can dispatch actions or read state
       const state = getState();
-      const wipTiles = state.wordInProgress.tilesFromLetterCloud;
-      const wipString = TilesToString(wipTiles);
-      const foundWordsStrings = selectFoundWordsAsStrings(state);
-      const isWipValid = IsValidWord(wipString, foundWordsStrings);
+      const wipTiles = selectWipTiles(state);
+      const isWipValid = selectIsWipValid(state);
 
       if (isWipValid) {
+        dispatch(acceptWord(undefined));
         dispatch(addFoundWord(wipTiles));
         dispatch(clearChosen(undefined));
+      } else {
+        dispatch(rejectWord(undefined));
       }
     };
 
@@ -109,6 +116,7 @@ export const App = () => {
         <div className='NWCol' style={{ flexGrow: 1 }}>
           <WordGrid></WordGrid>
           {bottomContent}
+          <FlyingAcceptedTiles></FlyingAcceptedTiles>
         </div>
         {nonMobileContent}
       </div>

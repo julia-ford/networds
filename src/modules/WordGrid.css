@@ -11,7 +11,7 @@
   margin-left: calc(var(--tile-diam) + var(--tile-margin-horz));
   margin-right: calc(var(--tile-diam) + var(--tile-margin-horz));
 
-  transition: box-shadow 0.5s, width 0.5s;
+  transition: box-shadow 0.5s;
 }
 
 .WordGrid.ChoosingBoardSpace {

@@ -1,0 +1,64 @@
+.FlyingAcceptedTiles {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  z-index: -1;
+}
+
+@keyframes flyDelayStart {
+  from {
+    opacity: 100%;
+    background-color: var(--color-blue-main);
+    color: #ffffff00;
+    right: calc(50% - var(--tile-diam) / 2);
+    top: calc(
+      50% +
+        (var(--tile-diam) - var(--component-margin) + var(--tile-margin-vert)) /
+        2
+    );
+  }
+  to {
+    opacity: 100%;
+    background-color: var(--color-blue-main);
+    color: #ffffff00;
+    right: calc(50% - var(--tile-diam) / 2);
+    top: calc(
+      50% +
+        (var(--tile-diam) - var(--component-margin) + var(--tile-margin-vert)) /
+        2
+    );
+  }
+}
+
+@keyframes flyRunAway {
+  from {
+    opacity: 100%;
+    background-color: var(--color-blue-main);
+    color: #ffffff00;
+    color: white;
+    right: calc(50% - var(--tile-diam) / 2);
+    top: calc(
+      50% +
+        (var(--tile-diam) - var(--component-margin) + var(--tile-margin-vert)) /
+        2
+    );
+    z-index: 100;
+  }
+  to {
+    opacity: 100%;
+  }
+}
+
+.NetwordsTile.WipTileTemp {
+  opacity: 0%;
+  z-index: 100;
+
+  animation-name: flyDelayStart, flyRunAway;
+  animation-duration: 0.25s, 0.5s;
+  animation-delay: 0s, 0.25s;
+  animation-timing-function: linear, ease-out;
+  animation-iteration-count: 1, 1;
+}

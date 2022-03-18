@@ -171,27 +171,6 @@ export const getNextCoords = (tileData: NWTData, direction: Directions) => {
   return coords;
 };
 
-/**
- * Checks if the 'word' a player made is valid.
- *
- * Makes sure it hasn't already been found, and that it's in the dictionary.
- *
- * @param word Stringified version of tiles the player has selected.
- * @param wordsFound List of already-found words.
- * @returns true if it's a valid word; false otherwise
- */
-export const IsValidWord = (word: string, wordsFound: string[]) => {
-  if (wordsFound.includes(word)) {
-    return false;
-  }
-
-  if (!dictContains(word)) {
-    return false;
-  }
-
-  return true;
-};
-
 export const TilesToString = (tiles: NWTData[]) => {
   return tiles
     .map((tileData) => tileData.letter!)

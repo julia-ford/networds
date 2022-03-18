@@ -12,6 +12,10 @@ import {
   TilesToString
 } from '../Shared';
 import { RootState } from '../store';
+import {
+  selectAcceptedAsString,
+  selectAcceptedTiles
+} from './WordInProgressSlice';
 
 interface FoundWordsState {
   foundWords: NWTData[][];
@@ -102,6 +106,11 @@ export const selectChosenLetterString = createSelector(
     }
     return foundWords[chosenWord][chosenLetter].letter;
   }
+);
+
+export const selectNumFoundWords = createSelector(
+  [selectFoundWords],
+  (foundWords) => foundWords.length
 );
 
 export const { addFoundWord, chooseLetter, clearChosen } =

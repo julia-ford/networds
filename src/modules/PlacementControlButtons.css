@@ -25,8 +25,7 @@
   border-radius: calc(var(--pcb-diam) / 2);
   font-size: var(--pcb-font-size);
 
-  transition: color 0.5s, background-color 0.5s, box-shadow 0.5s, width 0.5s,
-    height 0.5s, font-size 0.5s, left 0.5s, top 0.5s;
+  transition: color 0.5s, background-color 0.5s, box-shadow 0.5s;
 }
 
 .ConfirmPlacementButton {

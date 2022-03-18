@@ -8,6 +8,7 @@ import {
   TILE_UNITS,
   selectUnitSize
 } from '../stuff/slices/StylingSlice';
+import { selectWipTiles } from '../stuff/slices/WordInProgressSlice';
 import { ConnectorMode, TileConnector } from './bulk/TileConnector';
 
 import './LetterCloud.css';
@@ -15,9 +16,7 @@ import { LCDragTile } from './LetterCloudDragTile';
 
 export const LetterCloud = () => {
   const letters = useAppSelector((state) => state.letterCloud.letters);
-  const wordInProgress = useAppSelector(
-    (state) => state.wordInProgress.tilesFromLetterCloud
-  );
+  const wordInProgress = useAppSelector(selectWipTiles);
   const unitSize = useAppSelector(selectUnitSize);
 
   const tiles = letters.map((rowOfLetters, row) => {

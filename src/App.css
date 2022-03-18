@@ -35,19 +35,20 @@ body,
 }
 
 .NWCol {
+  position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: left;
   align-items: center;
 
   min-height: var(--nw-max-height-sans-header);
   height: var(--nw-max-height-sans-header);
   max-height: var(--nw-max-height-sans-header);
-  overflow: hidden;
 }
 
 .VertLine {
   width: 1px;
   height: var(--nw-max-height);
   background-color: rgba(0, 0, 0, 0.16);
+  z-index: -2;
 }

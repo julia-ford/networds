@@ -1,24 +1,77 @@
 .WordInProgress {
   display: flex;
   flex-direction: row;
+  align-items: center;
+  justify-content: center;
   position: relative;
-  height: var(--tile-diam);
+  box-sizing: border-box;
+
   min-width: var(--tile-diam);
-  border-radius: calc(var(--tile-diam) / 2);
-  transition: box-shadow 0.5s, width 0.5s;
-}
+  width: auto;
+  height: var(--tile-diam);
+  min-height: var(--tile-diam);
+  max-height: var(--tile-diam);
+  padding-left: var(--component-margin);
+  padding-right: var(--component-margin);
+  border-radius: 100vh;
 
-.WIPTile {
-  color: var(--color-blue-main);
-  background-color: var(--color-gray-main);
-}
-
-.WIPTile.Clickable:hover {
-  color: var(--color-blue-focus);
-  background-color: var(--color-gray-focus);
-}
-
-.WIPTile.Chosen {
-  color: white;
   background-color: var(--color-blue-main);
+  color: white;
+  font-weight: bold;
+}
+
+.WordInProgress.Empty {
+  opacity: 0%;
+  animation-name: wipShrinkDown;
+  animation-duration: 0.25s;
+  animation-iteration-count: 1;
+}
+
+@keyframes wipShrinkDown {
+  from {
+    opacity: 100%;
+    transform: scaleX(1);
+  }
+  to {
+    opacity: 100%;
+    color: #ffffff00;
+    transform: scaleX(0);
+  }
+}
+
+@keyframes angerWiggle {
+  0% {
+    opacity: 100%;
+  }
+  10% {
+    transform: translateX(calc(-1 * var(--component-margin)));
+  }
+  20% {
+    transform: translateX(var(--component-margin));
+  }
+  30% {
+    transform: translateX(calc(-1 * var(--component-margin)));
+    background-color: var(--color-red-main);
+  }
+  40% {
+    transform: translateX(var(--component-margin));
+    background-color: var(--color-red-main);
+  }
+  50% {
+    transform: translateX(0);
+    background-color: var(--color-red-main);
+    opacity: 100%;
+  }
+  100% {
+    background-color: var(--color-red-main);
+    opacity: 0%;
+  }
+}
+
+.WordInProgress.Rejected {
+  animation: angerWiggle 0.75s;
+  opacity: 0%;
+}
+
+@keyframes collapse {
 }

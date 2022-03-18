@@ -24,6 +24,10 @@ import {
   selectLastPlacedWord,
   selectPlacedWordsIndices
 } from '../stuff/slices/WordGridSlice';
+import {
+  clearAnimations,
+  selectAcceptedTiles
+} from '../stuff/slices/WordInProgressSlice';
 import { NetwordsTile } from './bulk/NetwordsTile';
 
 import './FoundWordsList.css';
@@ -38,8 +42,12 @@ export const FoundWordsList = () => {
   const placedIndices = useAppSelector(selectPlacedWordsIndices);
   const lastPlacedWord = useAppSelector(selectLastPlacedWord);
   const gameMode = useAppSelector(selectGameMode);
+  const acceptedTiles = useAppSelector(selectAcceptedTiles);
 
   const dispatch = useAppDispatch();
+
+  // Figure out if we should animate row expansion or not.
+  const nonMobileClass = isMobileSized ? '' : 'NonMobile';
 
   // Loop through all the words the player has found in order to draw the rows.
   const wordRows = foundWords.map((foundWord) => {
@@ -75,17 +83,21 @@ export const FoundWordsList = () => {
               dispatch(clearChosenSpace(undefined));
             };
 
+      // Made tile data so standard tile drawing can handle it.
       const tileData: NWTData = { row: 0, col: tileIndex, letter: tile.letter };
+
+      // Make the tile.
       return (
         <FWTile
           key={`Tile ${tileIndex} of Found Word ${foundWord.foundWordIndex}`}
           tileData={tileData}
-          className={`FoundWordsTile ${gameMode} ${chosenClass} ${placedClass}`}
+          className={`FoundWordsTile ${gameMode} ${chosenClass} ${placedClass} ${nonMobileClass}`}
           onClick={onClick}
         ></FWTile>
       );
     });
 
+    // Make a button to allow word-removal if this is the last-placed word.
     let unplaceWordButton = null;
     if (isLastPlacedWord) {
       unplaceWordButton = (
@@ -95,10 +107,12 @@ export const FoundWordsList = () => {
       );
     }
 
+    // Make the word row.
     return (
       <div
         key={`Found Word #${foundWord.foundWordIndex}`}
-        className='FoundWordsRow'
+        id={`Found Word #${foundWord.foundWordIndex}`}
+        className={`FoundWordsRow ${nonMobileClass}`}
       >
         {tiles}
         {unplaceWordButton}
@@ -106,6 +120,7 @@ export const FoundWordsList = () => {
     );
   });
 
+  // Determine appropriate component size based on layout.
   const heightString = `${
     SCREEN_UNITS_TALL_SANS_HEADER * unitSize
   }${TILE_UNITS}`;
@@ -117,8 +132,19 @@ export const FoundWordsList = () => {
         maxHeight: heightString
       };
 
+  // If the user scrolls while we're trying to animate the accepted tiles
+  // flying over to the found word list, cancel the animation.
+  const onScroll =
+    acceptedTiles === undefined
+      ? undefined
+      : () => {
+          console.log('scroll detected; clearing animations');
+          dispatch(clearAnimations(undefined));
+        };
+
+  // Make the found word list.
   return (
-    <div className='FoundWordsList' style={style}>
+    <div className={`FoundWordsList`} style={style} onScroll={onScroll}>
       <div className='FoundWordsSpacer'></div>
       {wordRows}
     </div>

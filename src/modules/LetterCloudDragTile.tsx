@@ -8,6 +8,7 @@ import {
 import { clearChosen } from '../stuff/slices/FoundWordsSlice';
 import {
   clearChosenDirection,
+  clearErrorToastMessage,
   selectGameMode,
   setGameMode,
   startDragging
@@ -75,6 +76,7 @@ export const LCDragTile = ({ myData }: LCDTProps) => {
       dispatch(clearChosen(undefined));
       dispatch(clearChosenDirection(undefined));
       dispatch(clearChosenSpace(undefined));
+      dispatch(clearErrorToastMessage(undefined));
     };
   }
 

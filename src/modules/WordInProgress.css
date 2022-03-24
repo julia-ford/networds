@@ -22,6 +22,10 @@
 
 .WordInProgress.Empty {
   opacity: 0%;
+}
+
+.WordInProgress.Accepted {
+  opacity: 0%;
   animation-name: wipShrinkDown;
   animation-duration: 0.25s;
   animation-iteration-count: 1;
@@ -71,7 +75,4 @@
 .WordInProgress.Rejected {
   animation: angerWiggle 0.75s;
   opacity: 0%;
-}
-
-@keyframes collapse {
 }

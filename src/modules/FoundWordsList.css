@@ -42,11 +42,11 @@
 }
 
 .Placed {
-  background-color: darkgray;
-  color: gray;
+  background-color: #bbbbbb;
+  color: #555555;
 }
 
-.FoundWordsTile.NonMobile {
+.FoundWordsTile.NonMobile.Waiting {
   animation: delayAppearance 0.75s;
 }
 

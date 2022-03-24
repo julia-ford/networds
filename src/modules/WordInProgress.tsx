@@ -9,6 +9,35 @@ import {
 
 import './WordInProgress.css';
 
+const noop = () => {
+  return false;
+};
+
+export const filterLoggingInTests = (
+  conditionFilter: (message: string) => boolean = noop,
+  method: keyof Console = 'log'
+) => {
+  // @ts-ignore
+  const originalConsoleLog = console[method].bind(console);
+
+  beforeEach(function () {
+    // @ts-ignore
+    jest.spyOn(console, method).mockImplementation((...args) => {
+      const [message = ''] = args;
+      const shouldSilence = conditionFilter(message);
+      if (shouldSilence) {
+        return;
+      }
+
+      originalConsoleLog(...args);
+    });
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+};
+
 export const WordInProgress = () => {
   const gameMode = useAppSelector(selectGameMode);
   const wipString = useAppSelector(selectWipAsStringCaps);
@@ -16,7 +45,8 @@ export const WordInProgress = () => {
   const acceptedString = useAppSelector(selectAcceptedAsStringCaps);
 
   const useRejected = wipString.length === 0 && !!rejectedString;
-  const useAccepted = wipString.length === 0 && !!acceptedString;
+  const useAccepted =
+    wipString.length === 0 && !!acceptedString && !useRejected;
 
   let content = '';
   if (wipString.length > 0) {
@@ -29,6 +59,7 @@ export const WordInProgress = () => {
 
   const rejectedClass = useRejected ? 'Rejected' : '';
   const emptyClass = wipString.length === 0 && !useRejected ? 'Empty' : '';
+  const acceptedClass = useAccepted ? 'Accepted' : '';
 
   return (
     <div

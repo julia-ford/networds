@@ -11,7 +11,11 @@ import {
   updateIsMobileSized
 } from './stuff/slices/StylingSlice';
 import { FoundWordsList } from './modules/FoundWordsList';
-import { selectGameMode, stopDragging } from './stuff/slices/GameSlice';
+import {
+  selectGameMode,
+  setErrorToastMessage,
+  stopDragging
+} from './stuff/slices/GameSlice';
 import { GameModes } from './stuff/Shared';
 import { addFoundWord, clearChosen } from './stuff/slices/FoundWordsSlice';
 import {
@@ -20,12 +24,14 @@ import {
   selectIsWipValid,
   acceptWord,
   rejectWord,
-  clearAnimations
+  clearAnimations,
+  selectWipErrorMessage
 } from './stuff/slices/WordInProgressSlice';
 import { AppDispatch, RootState } from './stuff/store';
 import { NWHeader } from './modules/NWHeader';
 import { WordInProgress } from './modules/WordInProgress';
 import { FlyingAcceptedTiles } from './modules/FlyingAcceptedTiles';
+import { ErrorToast } from './modules/ErrorToast';
 
 export const App = () => {
   const gameMode = useAppSelector(selectGameMode);
@@ -47,12 +53,15 @@ export const App = () => {
       const state = getState();
       const wipTiles = selectWipTiles(state);
       const isWipValid = selectIsWipValid(state);
+      const errorMessage = selectWipErrorMessage(state);
 
       if (isWipValid) {
         dispatch(acceptWord(undefined));
         dispatch(addFoundWord(wipTiles));
         dispatch(clearChosen(undefined));
       } else {
+        console.log(errorMessage);
+        dispatch(setErrorToastMessage(errorMessage));
         dispatch(rejectWord(undefined));
       }
     };
@@ -120,6 +129,7 @@ export const App = () => {
         </div>
         {nonMobileContent}
       </div>
+      <ErrorToast></ErrorToast>
     </div>
   );
 };

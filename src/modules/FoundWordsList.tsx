@@ -55,17 +55,20 @@ export const FoundWordsList = () => {
     const isChosenWord = foundWord.foundWordIndex === chosenWord;
 
     const isPlaced = placedIndices.includes(foundWord.foundWordIndex);
+    const placedClass = isPlaced ? 'Placed' : '';
 
     const isLastPlacedWord = foundWord.foundWordIndex === lastPlacedWord;
+
+    const isLastFoundWord = foundWord.foundWordIndex === foundWords.length - 1;
+
+    const shouldWait = acceptedTiles !== undefined && isLastFoundWord;
+    const waitingClass = shouldWait ? 'Waiting' : '';
 
     // Loop through the letters within this word in order to draw the tiles.
     const tiles = foundWord.tiles.map((tile, tileIndex) => {
       // Check if the player has chosen this letter to place on the board.
       const isChosenLetter = isChosenWord && tileIndex === chosenLetter;
-
       const chosenClass = isChosenLetter ? 'Chosen' : '';
-
-      const placedClass = isPlaced ? 'Placed' : '';
 
       // Construct the onClick handler for this tile.
       const onClick =
@@ -91,7 +94,7 @@ export const FoundWordsList = () => {
         <FWTile
           key={`Tile ${tileIndex} of Found Word ${foundWord.foundWordIndex}`}
           tileData={tileData}
-          className={`FoundWordsTile ${gameMode} ${chosenClass} ${placedClass} ${nonMobileClass}`}
+          className={`FoundWordsTile ${gameMode} ${chosenClass} ${placedClass} ${nonMobileClass} ${waitingClass}`}
           onClick={onClick}
         ></FWTile>
       );
@@ -138,7 +141,6 @@ export const FoundWordsList = () => {
     acceptedTiles === undefined
       ? undefined
       : () => {
-          console.log('scroll detected; clearing animations');
           dispatch(clearAnimations(undefined));
         };
 

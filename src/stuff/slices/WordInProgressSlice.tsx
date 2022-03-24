@@ -173,6 +173,30 @@ export const selectDoesWipContain = createSelector(
   }
 );
 
+export const selectWipErrorMessage = createSelector(
+  [selectWipAsString, selectFoundWordsAsStrings],
+  (wip, foundWords) => {
+    console.log(`Checking wip err msg. Current wip: ${wip}`);
+    if (wip.length === 0) {
+      return undefined;
+    }
+
+    if (wip.length < 3) {
+      return 'Minimum word length is 3 characters.';
+    }
+
+    if (foundWords.includes(wip)) {
+      return 'Word already found.';
+    }
+
+    if (!dictContains(wip)) {
+      return 'Word not in dictionary.';
+    }
+
+    return undefined;
+  }
+);
+
 export const selectIsWipValid = createSelector(
   [selectWipAsString, selectFoundWordsAsStrings],
   (wip, foundWords) => {

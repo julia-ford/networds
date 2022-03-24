@@ -8,7 +8,6 @@ export interface Candy {
   icon: IconProp;
   colorMain: string;
   colorText: string;
-  isValidStart: boolean;
 }
 
 interface NTProps {

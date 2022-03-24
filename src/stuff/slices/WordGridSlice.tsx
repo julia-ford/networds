@@ -48,8 +48,7 @@ const wordGridSlice = createSlice<
         candy: {
           icon: faAppleWhole,
           colorMain: COLOR_GREEN_MAIN,
-          colorText: 'white',
-          isValidStart: false
+          colorText: 'white'
         }
       },
       {
@@ -58,18 +57,7 @@ const wordGridSlice = createSlice<
         candy: {
           icon: faBell,
           colorMain: COLOR_PURPLE_MAIN,
-          colorText: 'white',
-          isValidStart: false
-        }
-      },
-      {
-        row: 4,
-        col: 4,
-        candy: {
-          icon: faStar,
-          colorMain: COLOR_PINK_MAIN,
-          colorText: 'white',
-          isValidStart: true
+          colorText: 'white'
         }
       }
     ]
@@ -205,7 +193,7 @@ export const selectWordGridTilesState = createSelector(
         rowArray.push({
           isJunction: false,
           isChosen: !!chosenSpace && AreTilesSame({ row, col }, chosenSpace),
-          isValidChoice: false,
+          isValidChoice: words.length === 0,
           isInPreview: false,
           hasPreviewError: false
         });
@@ -216,10 +204,7 @@ export const selectWordGridTilesState = createSelector(
     // Add candies.
     candies.forEach((tileData) => {
       wordGrid[tileData.row][tileData.col].candy = tileData.candy;
-      if (
-        !wordGrid[tileData.row][tileData.col].isChosen &&
-        tileData.candy?.isValidStart
-      ) {
+      if (!wordGrid[tileData.row][tileData.col].isChosen) {
         wordGrid[tileData.row][tileData.col].isValidChoice = true;
       }
     });

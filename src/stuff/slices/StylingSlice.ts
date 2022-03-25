@@ -231,6 +231,9 @@ const stylingSlice = createSlice<StylingState, SliceCaseReducers<StylingState>>(
       updateUnitSize: (state) => {
         state.unitSize = calcUnitSize();
         state.isMobileSized = calcIsMobileSized();
+      },
+      updateIsMobileSized: (state) => {
+        state.isMobileSized = calcIsMobileSized();
       }
     }
   }

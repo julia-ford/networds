@@ -1,0 +1,26 @@
+.MobileModeSwitchButton {
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+/Edge */
+  user-select: none; /* Standard */
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: var(--tile-diam);
+  height: var(--tile-diam);
+  border-radius: var(--component-margin);
+  padding: var(--component-margin);
+
+  box-shadow: var(--material-shadow);
+
+  background-color: var(--color-gray-main);
+
+  position: absolute;
+  right: var(--component-margin);
+  bottom: var(--component-margin);
+}
+
+.MobileModeSwitchButton:hover {
+  background-color: var(--color-gray-focus);
+}

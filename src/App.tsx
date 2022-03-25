@@ -32,6 +32,7 @@ import { NWHeader } from './modules/NWHeader';
 import { WordInProgress } from './modules/WordInProgress';
 import { FlyingAcceptedTiles } from './modules/FlyingAcceptedTiles';
 import { ErrorToast } from './modules/ErrorToast';
+import { MobileModeSwitchButton } from './modules/MobileModeSwitchButton';
 
 export const App = () => {
   const gameMode = useAppSelector(selectGameMode);
@@ -129,6 +130,7 @@ export const App = () => {
         </div>
         {nonMobileContent}
       </div>
+      <MobileModeSwitchButton></MobileModeSwitchButton>
       <ErrorToast></ErrorToast>
     </div>
   );

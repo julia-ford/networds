@@ -5,18 +5,14 @@ import {
   createSelector
 } from '@reduxjs/toolkit';
 import {
-  faStar,
+  faSatelliteDish,
   faBell,
   faAppleWhole
 } from '@fortawesome/free-solid-svg-icons';
 
 import { AreTilesSame, getNextCoords, NWTData, PlacedWord } from '../Shared';
 import { RootState } from '../store';
-import {
-  COLOR_GREEN_MAIN,
-  COLOR_PINK_MAIN,
-  COLOR_PURPLE_MAIN
-} from './StylingSlice';
+import { COLOR_PURPLE_MAIN } from './StylingSlice';
 import { WG_TILES_HIGH, WG_TILES_WIDE } from './StylingSlice';
 import { Candy } from '../../modules/bulk/NetwordsTile';
 import { selectChosenDirection, selectOppositeDirection } from './GameSlice';
@@ -24,10 +20,8 @@ import {
   selectChosenLetter,
   selectChosenLetterString,
   selectChosenWord,
-  selectChosenWordLength,
   selectChosenWordTiles
 } from './FoundWordsSlice';
-import { selectWipLength } from './WordInProgressSlice';
 
 interface WordGridState {
   placedWords: PlacedWord[];
@@ -46,8 +40,8 @@ const wordGridSlice = createSlice<
         row: 0,
         col: 0,
         candy: {
-          icon: faAppleWhole,
-          colorMain: COLOR_GREEN_MAIN,
+          icon: faSatelliteDish,
+          colorMain: COLOR_PURPLE_MAIN,
           colorText: 'white'
         }
       },
@@ -55,9 +49,10 @@ const wordGridSlice = createSlice<
         row: 8,
         col: 8,
         candy: {
-          icon: faBell,
+          icon: faSatelliteDish,
           colorMain: COLOR_PURPLE_MAIN,
-          colorText: 'white'
+          colorText: 'white',
+          flip: true
         }
       }
     ]

@@ -8,6 +8,7 @@ export interface Candy {
   icon: IconProp;
   colorMain: string;
   colorText: string;
+  flip?: boolean;
 }
 
 interface NTProps {
@@ -28,10 +29,15 @@ export const NetwordsTile = ({
   if (letter) {
     content = letter;
   } else if (candy) {
+    const iconStyle: CSSProperties = {};
+    if (candy.flip) {
+      style.transform = 'scaleX(-1)';
+    }
     content = (
       <FontAwesomeIcon
         icon={candy.icon}
         color={candy.colorMain}
+        style={iconStyle}
       ></FontAwesomeIcon>
     );
   }

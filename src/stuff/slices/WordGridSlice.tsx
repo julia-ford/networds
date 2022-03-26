@@ -6,8 +6,6 @@ import {
 } from '@reduxjs/toolkit';
 import {
   faSatelliteDish,
-  faBell,
-  faAppleWhole
 } from '@fortawesome/free-solid-svg-icons';
 
 import { AreTilesSame, getNextCoords, NWTData, PlacedWord } from '../Shared';
@@ -22,6 +20,7 @@ import {
   selectChosenWord,
   selectChosenWordTiles
 } from './FoundWordsSlice';
+import {SEED_DATE} from './LetterCloudSlice';
 
 interface WordGridState {
   placedWords: PlacedWord[];
@@ -258,21 +257,34 @@ export const selectPreviewHasErrors = createSelector(
 export const selectWgEmojified = createSelector(
   [selectWordGridTilesState],
   (wgTilesState) => {
-    return wgTilesState
-      .map((row, rowIndex) => {
-        const isOdd = rowIndex % 2 === 1;
-        let rowResult = isOdd ? ' ' : '';
-        rowResult += row
-          .map((tile) => {
-            if (tile.letter) {
-              return '🔵';
-            }
-            return '◯';
-          })
-          .join('');
-        return rowResult;
-      })
-      .join('\n');
+    const WHITE_CIRCLE = '⚪';
+    const PURPLE_CIRCLE = '🟣';
+    const BLUE_CIRCLE = '🔵';
+    const BLACK_CIRCLE = '⚫';
+    const boardAsString = wgTilesState.map((row, rowNumber) => {
+      let rowString = row.map((tile) => {
+        // Convert tile from WGTileData to emoji
+        if (!tile.letter) {
+          return WHITE_CIRCLE;
+        }
+        if (!tile.candy) {
+          return BLUE_CIRCLE;
+        }
+        if (tile.candy.colorMain === COLOR_PURPLE_MAIN) {
+          return PURPLE_CIRCLE;
+        }
+        console.warn("I don't know what to do with this tile:", tile);
+        return BLACK_CIRCLE;
+      }).join('');
+      if (rowNumber % 2 === 1) {
+        rowString = '   ' + rowString;
+      }
+      return rowString;
+    }).join('\n');
+
+    const headerLine = `Networds - ${SEED_DATE.getUTCMonth()+1}/${SEED_DATE.getUTCDate()}/${SEED_DATE.getUTCFullYear()}`;
+    const href = window.location.href;
+    return `${headerLine}\n\n${boardAsString}\n\n${href}`;
   }
 );
 

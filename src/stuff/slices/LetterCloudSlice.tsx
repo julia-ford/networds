@@ -3,9 +3,9 @@ import { createSlice, SliceCaseReducers } from '@reduxjs/toolkit';
 import { getRandomLetters } from '../dictionary';
 import { NWTData } from '../Shared';
 
-const date = new Date();
+export const SEED_DATE = new Date();
 const tempLetters = getRandomLetters(
-  `${date.getUTCFullYear()}${date.getUTCMonth()}${date.getUTCDate()}`
+  `${SEED_DATE.getUTCFullYear()}${SEED_DATE.getUTCMonth()}${SEED_DATE.getUTCDate()}`
 );
 
 interface LetterCloudState {

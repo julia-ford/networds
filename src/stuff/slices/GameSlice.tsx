@@ -20,6 +20,7 @@ interface GameState {
   isDraggingLCTiles: boolean;
   chosenDirection?: Directions;
   errorToastMessage?: string;
+  happyToastMessage?: string;
 }
 const gameSlice = createSlice<GameState, SliceCaseReducers<GameState>>({
   name: 'letterCloud',
@@ -55,9 +56,17 @@ const gameSlice = createSlice<GameState, SliceCaseReducers<GameState>>({
     },
     setErrorToastMessage: (state, action: PayloadAction<string>) => {
       state.errorToastMessage = action.payload;
+      state.happyToastMessage = undefined;
     },
     clearErrorToastMessage: (state) => {
       state.errorToastMessage = undefined;
+    },
+    setHappyToastMessage: (state, action: PayloadAction<string>) => {
+      state.happyToastMessage = action.payload;
+      state.errorToastMessage = undefined;
+    },
+    clearHappyToastMessage: (state) => {
+      state.happyToastMessage = undefined;
     }
   }
 });
@@ -86,7 +95,9 @@ export const {
   choosePrevDirection,
   clearChosenDirection,
   setErrorToastMessage,
-  clearErrorToastMessage
+  clearErrorToastMessage,
+  setHappyToastMessage,
+  clearHappyToastMessage
 } = gameSlice.actions;
 
 export default gameSlice.reducer;

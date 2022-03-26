@@ -1,0 +1,38 @@
+.HappyToast {
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+/Edge */
+  user-select: none; /* Standard */
+
+  position: absolute;
+  right: var(--component-margin);
+  bottom: calc(var(--tile-diam) * -2 - var(--component-margin));
+
+  border-radius: 4px;
+  box-shadow: var(--material-shadow);
+  background-color: #d5f6d8;
+  color: #28a745;
+  border-left-color: #28a745;
+  border-left-width: var(--component-margin);
+  border-left-style: solid;
+
+  height: calc(var(--tile-diam) * 2);
+  width: calc(var(--tile-diam) * 10);
+  margin-bottom: var(--component-margin);
+  padding: var(--component-margin);
+  box-sizing: border-box;
+
+  animation: makeToast 4s;
+}
+
+@keyframes makeToast {
+  0% {
+    bottom: calc(var(--tile-diam) * -2 - var(--component-margin));
+  }
+  12.5% {
+    bottom: 0;
+  }
+  87.5% {
+    bottom: 0;
+  }
+}

@@ -33,6 +33,7 @@ import { WordInProgress } from './modules/WordInProgress';
 import { FlyingAcceptedTiles } from './modules/FlyingAcceptedTiles';
 import { ErrorToast } from './modules/ErrorToast';
 import { MobileModeSwitchButton } from './modules/MobileModeSwitchButton';
+import {HappyToast} from './modules/HappyToast';
 
 export const App = () => {
   const gameMode = useAppSelector(selectGameMode);
@@ -131,6 +132,7 @@ export const App = () => {
         {nonMobileContent}
       </div>
       <MobileModeSwitchButton></MobileModeSwitchButton>
+      <HappyToast></HappyToast>
       <ErrorToast></ErrorToast>
     </div>
   );

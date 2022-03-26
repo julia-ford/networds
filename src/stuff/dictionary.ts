@@ -2,6 +2,9 @@ import dictData from './dict_culled_with_q.json';
 
 const { dictionary } = dictData;
 
+export const SEED_DATE = new Date();
+const SEED_STRING = `${SEED_DATE.getUTCFullYear()}${SEED_DATE.getUTCMonth()}${SEED_DATE.getUTCDate()}`;
+
 const xmur3 = (str: string) => {
   let hash = 1779033703 ^ str.length;
   for (let i = 0; i < str.length; i++) {
@@ -42,20 +45,21 @@ const lettersToGrid = (letters: string[]) => {
   ];
 };
 
-export const getRandomLetters = (seedStr: string) => {
-  const seedFunc = xmur3(seedStr);
-  const getRand = sfc32(seedFunc(), seedFunc(), seedFunc(), seedFunc());
+const seedFunc = xmur3(SEED_STRING);
+const getRand = sfc32(seedFunc(), seedFunc(), seedFunc(), seedFunc());
+const randomWords = [
+  dictionary[3][Math.trunc(getRand() * dictionary[3].length)],
+  dictionary[5][Math.trunc(getRand() * dictionary[5].length)],
+  dictionary[5][Math.trunc(getRand() * dictionary[5].length)],
+  dictionary[6][Math.trunc(getRand() * dictionary[6].length)]
+];
 
-  const rand3letter = Math.trunc(getRand() * dictionary[3].length);
-  const rand5letter1 = Math.trunc(getRand() * dictionary[5].length);
-  const rand5letter2 = Math.trunc(getRand() * dictionary[5].length);
-  const rand6letter = Math.trunc(getRand() * dictionary[6].length);
+export const getRandomWords = () => {
+  return [...randomWords];
+};
 
-  const stringsSmushed =
-    dictionary[3][rand3letter] +
-    dictionary[5][rand5letter1] +
-    dictionary[5][rand5letter2] +
-    dictionary[6][rand6letter];
+export const getRandomLetters = () => {
+  const stringsSmushed = randomWords.join('');
 
   const weightedLetters: { letter: string; weight: number }[] = [];
   for (let i = 0; i < stringsSmushed.length; i++) {

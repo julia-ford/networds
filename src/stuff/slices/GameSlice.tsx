@@ -21,12 +21,14 @@ interface GameState {
   chosenDirection?: Directions;
   errorToastMessage?: string;
   happyToastMessage?: string;
+  showHelp: boolean;
 }
 const gameSlice = createSlice<GameState, SliceCaseReducers<GameState>>({
   name: 'letterCloud',
   initialState: {
     gameMode: GameModes.BuildingWord,
-    isDraggingLCTiles: false
+    isDraggingLCTiles: false,
+    showHelp: false
   },
   reducers: {
     setGameMode: (state, action: PayloadAction<GameModes>) => {
@@ -67,6 +69,9 @@ const gameSlice = createSlice<GameState, SliceCaseReducers<GameState>>({
     },
     clearHappyToastMessage: (state) => {
       state.happyToastMessage = undefined;
+    },
+    toggleShowHelp: (state) => {
+      state.showHelp = !state.showHelp;
     }
   }
 });
@@ -97,7 +102,8 @@ export const {
   setErrorToastMessage,
   clearErrorToastMessage,
   setHappyToastMessage,
-  clearHappyToastMessage
+  clearHappyToastMessage,
+  toggleShowHelp
 } = gameSlice.actions;
 
 export default gameSlice.reducer;

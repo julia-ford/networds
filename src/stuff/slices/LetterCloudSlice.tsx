@@ -1,14 +1,13 @@
 import { createSlice, SliceCaseReducers } from '@reduxjs/toolkit';
 
-import { getRandomLetters } from '../dictionary';
+import { getRandomLetters, getRandomWords } from '../dictionary';
 import { NWTData } from '../Shared';
 
-export const SEED_DATE = new Date();
-const tempLetters = getRandomLetters(
-  `${SEED_DATE.getUTCFullYear()}${SEED_DATE.getUTCMonth()}${SEED_DATE.getUTCDate()}`
-);
+const wordsOfTheDay = getRandomWords();
+const tempLetters = getRandomLetters();
 
 interface LetterCloudState {
+  words: string[];
   letters: (string | undefined)[][];
   angeredLetters: NWTData[];
   calmdownTodo: NWTData[][];
@@ -19,6 +18,7 @@ const letterCloudSlice = createSlice<
 >({
   name: 'letterCloud',
   initialState: {
+    words: wordsOfTheDay,
     letters: tempLetters,
     angeredLetters: [],
     calmdownTodo: []

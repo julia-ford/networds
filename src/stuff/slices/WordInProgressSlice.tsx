@@ -177,7 +177,7 @@ export const selectWipErrorMessage = createSelector(
   [selectWipAsString, selectFoundWordsAsStrings],
   (wip, foundWords) => {
     console.log(`Checking wip err msg. Current wip: ${wip}`);
-    if (wip.length === 0) {
+    if (wip.length < 2) {
       return undefined;
     }
 

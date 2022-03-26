@@ -1,25 +1,26 @@
-import { useAppDispatch, useAppSelector } from '../stuff/hooks';
-import { GameModes } from '../stuff/Shared';
-import { selectGameMode, setGameMode } from '../stuff/slices/GameSlice';
-import { selectIsMobileSized } from '../stuff/slices/StylingSlice';
+import { useAppSelector } from '../stuff/hooks';
 import { selectWgEmojified } from '../stuff/slices/WordGridSlice';
 
 import './NWHeader.css';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faShareSquare} from '@fortawesome/free-solid-svg-icons';
 
 export const NWHeader = () => {
   const wgEmoji = useAppSelector(selectWgEmojified);
 
-  // TODO: Make this actually work and put it on the bar.
   const onCopyEmojiClicked = () => {
-    alert(wgEmoji);
+    navigator.clipboard.writeText(wgEmoji).then(() => {
+      // TODO toast this with some happy toast instead of the error toast
+      console.log("Copied!");
+    });
   };
   const alertEmojiButton = (
-    <button onClick={onCopyEmojiClicked}>copy emoji</button>
+    <FontAwesomeIcon onClick={onCopyEmojiClicked} icon={faShareSquare}></FontAwesomeIcon>
   );
 
   return (
     <div className='NWHeader'>
-      <p>Networds</p>
+      <p>Networds <span className={'Clickable'}>{alertEmojiButton}</span></p>
     </div>
   );
 };

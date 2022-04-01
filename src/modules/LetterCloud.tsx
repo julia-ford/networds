@@ -57,20 +57,25 @@ export const LetterCloud = () => {
   });
 
   return (
-    <div className='LetterCloud'>
-      {tiles}
-      <svg
-        width={`${LC_UNITS_WIDE * unitSize}`}
-        height={`${LC_UNITS_HIGH * unitSize}`}
-        viewBox={`0 0 ${LC_UNITS_WIDE * unitSize} ${LC_UNITS_HIGH * unitSize}`}
-        xmlns='http://www.w3.org/2000/svg'
-        style={{
-          width: `${LC_UNITS_WIDE * unitSize}${TILE_UNITS}`,
-          height: `${LC_UNITS_HIGH * unitSize}${TILE_UNITS}`
-        }}
-      >
-        {connectors}
-      </svg>
+    <div className='LetterCloudHolder'>
+      <div className='LetterCloudBackground'></div>
+      <div className='LetterCloud'>
+        {tiles}
+        <svg
+          width={`${LC_UNITS_WIDE * unitSize}`}
+          height={`${LC_UNITS_HIGH * unitSize}`}
+          viewBox={`0 0 ${LC_UNITS_WIDE * unitSize} ${
+            LC_UNITS_HIGH * unitSize
+          }`}
+          xmlns='http://www.w3.org/2000/svg'
+          style={{
+            width: `${LC_UNITS_WIDE * unitSize}${TILE_UNITS}`,
+            height: `${LC_UNITS_HIGH * unitSize}${TILE_UNITS}`
+          }}
+        >
+          {connectors}
+        </svg>
+      </div>
     </div>
   );
 };

@@ -11,6 +11,8 @@
   background-color: white;
 
   box-shadow: var(--material-shadow);
+
+  z-index: 2;
 }
 
 .PlacementControlButton {
@@ -26,6 +28,8 @@
   font-size: var(--pcb-font-size);
 
   transition: color 0.5s, background-color 0.5s, box-shadow 0.5s;
+
+  z-index: 2;
 }
 
 .ConfirmPlacementButton {

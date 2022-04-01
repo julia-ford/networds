@@ -113,18 +113,24 @@ export const WordGrid = () => {
   }
 
   return (
-    <div className={`WordGrid ${gameMode}`}>
-      {tiles}
-      <svg
-        width={`${WG_UNITS_WIDE * unitSize}`}
-        height={`${WG_UNITS_HIGH * unitSize}`}
-        viewBox={`0 0 ${WG_UNITS_WIDE * unitSize} ${WG_UNITS_HIGH * unitSize}`}
-        xmlns='http://www.w3.org/2000/svg'
-      >
-        {connectors}
-      </svg>
-      {directionPickers}
-      {controlButtons}
+    <div className='WordGridHolder'>
+      <div className='WordGridOutline'></div>
+      <div className='WordGridBackground'></div>
+      <div className={`WordGrid ${gameMode}`}>
+        {tiles}
+        <svg
+          width={`${WG_UNITS_WIDE * unitSize}`}
+          height={`${WG_UNITS_HIGH * unitSize}`}
+          viewBox={`0 0 ${WG_UNITS_WIDE * unitSize} ${
+            WG_UNITS_HIGH * unitSize
+          }`}
+          xmlns='http://www.w3.org/2000/svg'
+        >
+          {connectors}
+        </svg>
+        {directionPickers}
+        {controlButtons}
+      </div>
     </div>
   );
 };

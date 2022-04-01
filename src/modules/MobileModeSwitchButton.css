@@ -7,8 +7,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: var(--tile-diam);
-  height: var(--tile-diam);
+  width: calc(var(--tile-diam) * 2);
+  height: calc(var(--tile-diam) * 2);
   border-radius: var(--component-margin);
   padding: var(--component-margin);
 

@@ -1,31 +1,71 @@
-.WordGrid {
+.WordGridHolder,
+.WordGrid,
+.WordGrid > svg {
   position: relative;
 
   width: var(--wg-draw-width);
   height: var(--wg-draw-height);
 
-  border-radius: calc(var(--tile-diam) / 2);
+  border-top-left-radius: calc(var(--tile-diam) / 2);
+  border-bottom-right-radius: calc(var(--tile-diam) / 2);
+}
 
+.WordGridHolder {
   margin-top: calc(var(--tile-diam) + var(--tile-margin-vert));
   margin-bottom: var(--component-margin);
   margin-left: calc(var(--tile-diam) + var(--tile-margin-horz));
   margin-right: calc(var(--tile-diam) + var(--tile-margin-horz));
-
-  transition: box-shadow 0.5s;
 }
 
-.WordGrid.ChoosingBoardSpace {
+.WordGridOutline {
+  position: absolute;
+
+  left: calc((var(--component-margin) + var(--tile-shadow-width)) * -1);
+  right: calc((var(--component-margin) + var(--tile-shadow-width)) * -1);
+  top: calc((var(--component-margin) + var(--tile-shadow-width)) * -1);
+  bottom: calc((var(--component-margin) + var(--tile-shadow-width)) * -1);
+
   box-shadow: var(--suggestion-shadow);
+  border-top-left-radius: calc(var(--tile-diam) / 2);
+  border-bottom-right-radius: calc(var(--tile-diam) / 2);
+
+  z-index: -1;
 }
 
-.WordGrid > svg {
-  width: var(--wg-draw-width);
-  height: var(--wg-draw-height);
+.WordGridBackground {
+  position: absolute;
+
+  background-color: #00000080;
+
+  left: calc(var(--component-margin) * -1);
+  right: calc(var(--component-margin) * -1);
+  top: calc(var(--component-margin) * -1);
+  bottom: calc(var(--component-margin) * -1);
+
+  border-top-left-radius: calc(var(--tile-diam) / 2);
+  border-bottom-right-radius: calc(var(--tile-diam) / 2);
+
+  z-index: -1;
+}
+
+.WGTile {
+  background-color: #00000000;
+  border-color: #ffffff30;
+  border-width: calc(var(--component-margin) / 4);
+  border-style: solid;
+  box-shadow: none;
+
+  z-index: 1;
+}
+.WGTile.Clickable:hover {
+  background-color: #00000000;
+  box-shadow: var(--suggestion-shadow);
 }
 
 .WGTile.WithLetter {
   background-color: var(--color-blue-main);
   color: white;
+  border-color: #ffffff00;
 }
 
 .WGTile.WithLetter.Clickable:hover {

@@ -18,6 +18,8 @@
   background-color: var(--color-blue-main);
   color: white;
   font-weight: bold;
+
+  box-shadow: var(--material-shadow);
 }
 
 .WordInProgress.Empty {

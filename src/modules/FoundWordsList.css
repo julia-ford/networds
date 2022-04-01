@@ -25,8 +25,6 @@
   margin-left: var(--component-margin);
   margin-right: var(--component-margin);
   margin-bottom: var(--component-margin);
-
-  overflow: hidden;
 }
 .FoundWordsRow.NonMobile {
   animation: growIn 0.5s;

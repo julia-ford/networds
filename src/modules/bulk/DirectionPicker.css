@@ -14,11 +14,15 @@
   box-shadow: var(--material-shadow);
 
   transition: background-color 0.5s;
+
+  z-index: 2;
 }
 
 .DirectionPicker {
   background-color: var(--color-yellow-main);
   color: black;
+
+  z-index: 2;
 }
 .DirectionPicker:hover {
   background-color: var(--color-yellow-focus);
@@ -27,6 +31,8 @@
 .CancelDirPickingButton {
   background-color: var(--color-red-main);
   color: white;
+
+  z-index: 2;
 }
 .CancelDirPickingButton:hover {
   background-color: var(--color-red-focus);

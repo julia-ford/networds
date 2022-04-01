@@ -5,10 +5,30 @@
 
   width: var(--lc-draw-width);
   height: var(--lc-draw-height);
+}
+
+.LetterCloudBackground {
+  position: absolute;
+  left: calc(var(--component-margin) * -1);
+  right: calc(var(--component-margin) * -1);
+  top: calc(var(--component-margin) * -3);
+  bottom: calc(var(--component-margin) * -3);
+
+  z-index: -1;
+
+  border-radius: 100vh;
+
+  background-color: #ffffff14;
+}
+
+.LetterCloudHolder {
+  position: relative;
+
   margin-top: var(--component-margin);
   margin-bottom: var(--component-margin);
 
-  background-color: #ffffff14;
+  width: var(--lc-draw-width);
+  height: var(--lc-draw-height);
 }
 
 .NetwordsTile.LCTile {

@@ -90,7 +90,11 @@ export const NWHeader = () => {
 
   return (
     <div className='NWHeader'>
-      <p>Networds</p>
+      <p className='Unhighlightable'>
+        <span className='NetwordsPurple'>N</span>
+        <span className='NetwordsBlue'>ETWORD</span>
+        <span className='NetwordsPurple'>S</span>
+      </p>
       <div className='NWHeaderButtonRow'>
         {helpButton}
         {alertEmojiButton}

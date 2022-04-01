@@ -82,6 +82,7 @@ export const COLOR_GRAY_MAIN = '#f8f9fa';
 export const COLOR_GRAY_FOCUS = '#e2e6ea';
 export const COLOR_BLUE_MAIN = '#007bff';
 export const COLOR_BLUE_FOCUS = '#0069d9';
+export const COLOR_BLUE_DARK = '#00579b';
 export const COLOR_BLUE_TRANS = COLOR_BLUE_MAIN + '80';
 export const COLOR_BLUE_INVIS = COLOR_BLUE_MAIN + '00';
 export const COLOR_RED_MAIN = '#dc3545';
@@ -289,6 +290,10 @@ document.documentElement.style.setProperty(
 document.documentElement.style.setProperty(
   '--color-green-focus',
   `${COLOR_GREEN_FOCUS}`
+);
+document.documentElement.style.setProperty(
+  '--color-purple-main',
+  `${COLOR_PURPLE_MAIN}`
 );
 
 export const selectUnitSize = (state: RootState) => {
